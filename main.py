@@ -1,6 +1,18 @@
+# src/main.py
+from src.engine.game import Game
+from src.scenes.test_scene import TestScene
+
+
 def main():
-    print("Hello Тараканы МАИ")
+    game = Game()
 
+    # Регистрация сцен
+    game.scene_manager.add_scene("testscene", TestScene(game))
 
-if __name__ == '__main__':
+    # Стартовая сцена
+    game.scene_manager.switch_to("testscene")
+
+    game.run()
+
+if __name__ == "__main__":
     main()
