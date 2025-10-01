@@ -4,7 +4,7 @@ from src.engine.renderer import Renderer
 from src.entities.base_objects.game_object import GameObject
 
 
-class GameRect(GameObject):
+class DragGameRect(GameObject):
     def __init__(self, x: int, y: int, width: float, height: float,
                  color: tuple[int, int, int, int] = (0, 0, 0, 0),
                  border_radius=0):

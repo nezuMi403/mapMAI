@@ -1,12 +1,12 @@
 import pygame
-from src.entities.base_objects.game_rect import GameRect
+from src.entities.base_objects.rect_object import RectObject
 from src.scenes.base_scene import BaseScene
 
 class TestScene(BaseScene):
     def __init__(self, game):
         super().__init__(game)
         self.game = game
-        self.rect = GameRect(100, 100, 100, 100, (255, 0, 0, 255))
+        self.rect = RectObject(100, 100, 100, 100, (255, 0, 0, 255))
 
 
     def on_enter(self):
