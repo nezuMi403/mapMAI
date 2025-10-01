@@ -6,8 +6,8 @@ class TestScene(BaseScene):
     def __init__(self, game):
         super().__init__(game)
         self.game = game
-        self.rect = DragRectObject(100, 100, 100, 100, (255, 0, 0, 255))
-
+        self.rect = DragRectObject(100, 100, 100, 100, (100, 240, 100, 100))
+        self.background_color = (140, 140, 240)
         self.set_objects()
 
 
@@ -26,5 +26,4 @@ class TestScene(BaseScene):
 
     def render(self):
         super().render()
-        #self.game.screen.fill((240, 240, 240))
         #self.rect.draw(self.game.screen)
