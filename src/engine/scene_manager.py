@@ -2,7 +2,7 @@ class SceneManager:
     def __init__(self, game):
         self.game = game
         self.current_scene = None
-        self.scenes = {}  # {"desktop": DesktopScene(self.game), ...}
+        self.scenes = {}
 
     def add_scene(self, name, scene_class):
         self.scenes[name] = scene_class

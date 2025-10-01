@@ -6,7 +6,7 @@ from src.engine.renderer import Renderer
 
 
 class GameObject:
-    def __init__(self, x: float = 0, y: float = 0,
+    def __init__(self, x: int = 0, y: int = 0,
                  width: float = 32, height: float = 32,
                  visible: bool = True, active: bool = True):
         """
@@ -34,11 +34,11 @@ class GameObject:
 
 
     @property
-    def position(self) -> tuple[float, float]:
+    def position(self) -> tuple[int, int]:
         return self.x, self.y
 
     @position.setter
-    def position(self, value: tuple[float, float]):
+    def position(self, value: tuple[int, int]):
         self.x, self.y = value
         self.rect.x = self.x
         self.rect.y = self.y
@@ -83,13 +83,11 @@ class GameObject:
 
     def on_click_left(self, event: pygame.event.Event):
         """Обработка клика мышью левой кнопкой"""
-        # TODO: сделать логи
         #print(f"Клик левой кнопкой по {self.__class__.__name__} ({event.pos})")
         pass
 
     def on_click_right(self, event: pygame.event.Event):
         """Обработка клика мышью правой кнопкой"""
-        # TODO: сделать логи
         #print(f"Клик правой кнопкой по {self.__class__.__name__} ({event.pos})")
         pass
 

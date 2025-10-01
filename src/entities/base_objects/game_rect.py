@@ -5,7 +5,7 @@ from src.entities.base_objects.game_object import GameObject
 
 
 class GameRect(GameObject):
-    def __init__(self, x: float, y: float, width: float, height: float,
+    def __init__(self, x: int, y: int, width: float, height: float,
                  color: tuple[int, int, int, int] = (0, 0, 0, 0),
                  border_radius=0):
         super().__init__(x, y, width, height)

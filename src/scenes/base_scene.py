@@ -1,6 +1,6 @@
 import pygame
 from typing import List, Dict, Type
-from src.entities.game_object import GameObject
+from src.entities.base_objects.game_object import GameObject
 
 
 class BaseScene:
@@ -35,7 +35,7 @@ class BaseScene:
         if self.paused:
             return
 
-        for event in pygame.event.get():
+        for event in events:
             if event.type == pygame.QUIT:
                 self.game.running = False
 

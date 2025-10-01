@@ -1,4 +1,5 @@
 class GameSettings:
+    """Хранит текущие настройки"""
     resolution: tuple[int, int]
     volume: float
     fullscreen: bool

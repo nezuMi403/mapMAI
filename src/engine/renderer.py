@@ -6,6 +6,7 @@ from src.engine.game_settings import GameSettings
 
 
 class Renderer:
+    """Класс для рендера объектов"""
     @staticmethod
     def blit(surface: pygame.Surface, image: pygame.Surface, dest):
         x0, y0 = GameSettings.X0, GameSettings.Y0
