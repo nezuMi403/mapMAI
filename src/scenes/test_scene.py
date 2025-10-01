@@ -26,4 +26,3 @@ class TestScene(BaseScene):
 
     def render(self):
         super().render()
-        #self.rect.draw(self.game.screen)

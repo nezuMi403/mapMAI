@@ -42,7 +42,7 @@ class Game:
         while self.running:
             # Вычисляем dt
             current_time = pygame.time.get_ticks()
-            dt = (current_time - last_time) / 1000.0  # Переводим в секунды
+            dt = (current_time - last_time) / 1000.0
             last_time = current_time
 
             self.clock.tick(self.fps)
