@@ -41,10 +41,9 @@ class BaseScene:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.paused = not self.paused
+                    self.game.running = False
                 if event.key == pygame.K_F1:
                     self.game.change_fullscreen(not self.game.get_fullscreen())
-
 
             # Передаем события всем активным объектам
             for obj in self.objects:

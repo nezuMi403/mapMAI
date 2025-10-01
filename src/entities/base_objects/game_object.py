@@ -65,7 +65,6 @@ class GameObject:
         """Обработка событий"""
         if not self.active:
             return
-
         if event.type == pygame.MOUSEMOTION:
             rect = Renderer.get_rect(self.rect)
             if rect.collidepoint(event.pos):
@@ -83,12 +82,12 @@ class GameObject:
 
     def on_click_left(self, event: pygame.event.Event):
         """Обработка клика мышью левой кнопкой"""
-        #print(f"Клик левой кнопкой по {self.__class__.__name__} ({event.pos})")
+        # print(f"Клик левой кнопкой по {self.__class__.__name__} ({event.pos})")
         pass
 
     def on_click_right(self, event: pygame.event.Event):
         """Обработка клика мышью правой кнопкой"""
-        #print(f"Клик правой кнопкой по {self.__class__.__name__} ({event.pos})")
+        # print(f"Клик правой кнопкой по {self.__class__.__name__} ({event.pos})")
         pass
 
     def on_collision(self, other: 'GameObject'):
