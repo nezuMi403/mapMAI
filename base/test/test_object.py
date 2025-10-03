@@ -38,4 +38,3 @@ class TestObject(BaseObject):
         """Отрисовка объекта"""
         super().draw(surface)
         pygame.draw.rect(surface, self.color, self.rect)
-
