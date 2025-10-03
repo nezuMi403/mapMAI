@@ -31,7 +31,7 @@ class TestObject(BaseObject):
         x_pos += self.v * dt  # v * t в секундах
         self.set_pos(x_pos, self.y)
 
-        if x_pos > 700 or x_pos < 0:
+        if x_pos > 736 or x_pos < 0:
             self.v *= -1
 
     def draw(self, surface: pygame.Surface):
