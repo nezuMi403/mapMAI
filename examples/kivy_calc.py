@@ -13,7 +13,6 @@ Config.set('graphics', 'resisable', 0)  # установили значение 
 Config.set('graphics', 'width', 400)  # установили ширину
 Config.set('graphics', 'height', 500)  # установили высоту
 
-
 class Calculator(App):  # создаем класс калькулятора
     def add_number(self, instance):  # функция обработки кнопки, instance содержит инф-ию о кнопке
         self.text += instance.text  # instance.text - текст кнопки
