@@ -13,7 +13,7 @@ Config.set('graphics', 'width', 360)
 Config.set('graphics', 'height', 640)
 
 class MainApp(App):
-    cur_img_path = 'assets/sprites/GUK/GUKV2.png'
+    cur_img_path = 'assets/sprites/GUK/V/GUKV2.png'
     img_map = Image()
     scatter_plane = ScatterPlane()
 
@@ -137,26 +137,6 @@ class MainApp(App):
             # Применяем новый масштаб и позицию
             self.scatter_plane.scale = new_scale
             self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
-    """def plus(self, instance):
-        s =  self.scatter_plane
-        self.scatter_plane.scale = min(
-            s.scale_max, s.scale+0.2)
-        s = self.scatter_plane
-        if s.scale < s.scale_max:
-            self.scatter_plane.pos = \
-                (
-
-                )
-    def minus(self, instance):
-        s = self.scatter_plane
-        self.scatter_plane.scale = max(
-            s.scale_min, s.scale - 0.2)
-        s = self.scatter_plane
-        if s.scale > s.scale_min:
-            self.scatter_plane.pos = \
-                (
-
-                )"""
 
 if __name__ == '__main__':
     MainApp().run()
