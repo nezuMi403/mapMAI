@@ -8,6 +8,8 @@ from kivy.config import Config
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.core.text import LabelBase
+from kivy.config import Config
 
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
@@ -80,7 +82,6 @@ class MapScreen(Screen):
             mipmap=True
         )
         label1.pos = (230, 260)
-        label1.font_name = 'Arial'
 
         self.scatter_plane.add_widget(self.img_map)
         self.scatter_plane.add_widget(label1)
