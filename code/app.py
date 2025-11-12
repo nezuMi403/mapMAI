@@ -181,11 +181,9 @@ class MapScreen(Screen):
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
 
-        print(self.cur_level, self.cur_img_path)
         self.update_widgets()
 
     def plus(self, instance):
-        print('plus')
         # Запоминаем текущий масштаб и позицию
         old_scale = self.scatter_plane.scale
         old_pos = self.scatter_plane.pos
@@ -228,12 +226,6 @@ class MapScreen(Screen):
             # Применяем новый масштаб и позицию
             self.scatter_plane.scale = new_scale
             self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
-
-    def go_to_test(self, instance):
-        print('клик')
-
-
-
 
 
 class TextScreen(Screen):
