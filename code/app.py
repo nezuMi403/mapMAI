@@ -5,7 +5,6 @@ from kivy.uix.label import Label
 from kivy.uix.scatter import ScatterPlane
 from kivy.uix.boxlayout import BoxLayout
 from kivy.config import Config
-from kivy.metrics import dp
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.graphics import (Color, Line, Rectangle, Ellipse)
@@ -15,6 +14,43 @@ from code.images_paths import ImagesPaths
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
 Config.set('graphics', 'height', 640)
+
+
+"""class ScatterLoader:
+    def __init__(self):
+        self.all = {}
+    
+    @staticmethod
+    def new_scatter(path):
+        scatter_plane = ScatterPlane(scale=1.5)
+        scatter_plane.pos = (0, 0)
+        scatter_plane.scale_max = 5
+        scatter_plane.scale_min = 1.5
+
+        img_map = Image(source=path, pos=(0, 0), mipmap=True)
+        img_map.size = (360, 360)
+        img_map.pos = ((360 - img_map.width) // 2, (640 - img_map.height) // 2)
+
+        scatter_plane.add_widget(img_map)
+        return scatter_plane
+        
+    def load(self):
+        # Собираем все пути
+        all_arrs = {}
+        all_arrs.update(ImagesPaths.BUTTONS)
+        all_arrs.update(ImagesPaths.GUKA)
+        all_arrs.update(ImagesPaths.GUKB)
+        all_arrs.update(ImagesPaths.GUKV)
+
+
+        # Загружаем каждое изображение
+        for item in all_arrs:
+            path = all_arrs[item]
+            try:
+                self.all[item] = self.new_scatter(path)
+                print(f"Successfully loaded: {path}")
+            except Exception as e:
+                print(f"Failed to load {path}: {e}")"""
 
 
 class OutsideScreen(Screen):
@@ -29,27 +65,27 @@ class MapScreen(Screen):
         self.cur_build = ImagesPaths.GUKV
         self.cur_img_path = self.cur_build[self.cur_level]
 
-        self.img_map = Image()
-        self.scatter_plane = ScatterPlane()
-
         self.main_wig = Widget()
         self.ux = ScatterPlane(scale=1.5,
                           do_translation=False,
                           do_rotation=False,
                           do_scale=False)
+
         self.scatter_plane = ScatterPlane(scale=1.5)
-
         self.scatter_plane.pos = (0, 0)
-
         self.scatter_plane.scale_max = 5
         self.scatter_plane.scale_min = 1.5
+
         self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
 
+        self.load_img()
+
+
         d = 0.8
-        self.b_up = Image(
-            source='assets/sprites/buttons/button_up.png',
+        self.img_up = Image(
+            source=ImagesPaths.BUTTONS['up'],
             pos=(360 - 40, 640 - 200),
             size=(50 * d, 50 * d),
             mipmap=True,
@@ -57,64 +93,74 @@ class MapScreen(Screen):
 
         self.button_up = Button(
             on_press=self.up,
-            size=self.b_up.size, pos=self.b_up.pos,
+            size=self.img_up.size, pos=self.img_up.pos,
             background_color=(255, 0, 0, 0),
             background_normal=''
         )
-        self.b_dw = Image(
-            source='assets/sprites/buttons/button_down.png',
+        self.img_dw = Image(
+            source=ImagesPaths.BUTTONS['down'],
             pos=(360 - 40, 640 - 250),
             size=(50 * d, 50 * d),
             mipmap=True,
         )
         self.button_down = Button(
             on_press=self.down,
-            size=self.b_dw.size, pos=self.b_dw.pos,
+            size=self.img_dw.size, pos=self.img_dw.pos,
             background_color=(0, 255, 0, 0),
             background_normal=''
         )
-        self.b_pl = Image(
-            source='assets/sprites/buttons/plus.png',
+        self.img_pl = Image(
+            source=ImagesPaths.BUTTONS['plus'],
             pos=(360 - 40, 640 - 330),
             size=(50 * d, 50 * d),
             mipmap=True,
         )
-        self.button_pl = Button(on_press=self.plus,
-                           size=self.b_pl.size, pos=self.b_pl.pos,
-                           background_color=(0, 0, 0, 0),
-                           background_normal=''
-                           )
-        self.b_mn = Image(
-            source='assets/sprites/buttons/minus.png',
+        self.button_plus = Button(on_press=self.plus,
+                                  size=self.img_pl.size, pos=self.img_pl.pos,
+                                  background_color=(0, 0, 0, 0),
+                                  background_normal=''
+                                  )
+        self.img_mn = Image(
+            source=ImagesPaths.BUTTONS['minus'],
             pos=(360 - 40, 640 - 380),
             size=(50 * d, 50 * d),
             mipmap=True,
         )
-        self.button_mn = Button(on_press=self.minus,
-                           size=self.b_mn.size, pos=self.b_mn.pos,
-                           color=(0, 0, 0, 0),
-                           background_color=(0, 0, 0, 0),
-                           background_normal=''
-                           )
+        self.button_minus = Button(on_press=self.minus,
+                                   size=self.img_mn.size, pos=self.img_mn.pos,
+                                   color=(0, 0, 0, 0),
+                                   background_color=(0, 0, 0, 0),
+                                   background_normal=''
+                                   )
+        """self.scatter_loader = ScatterLoader()
+        self.scatter_loader.load()
 
-        self.label1 = Label(
-            text='Теремок',
-            color=(0, 0, 0, 1),
-            font_size='12sp',
-            size_hint=(None, None),
-            shorten=True,
-            mipmap=True
-        )
-        self.label1.pos = (230, 260)
-        self.label1.font_name = 'Arial'
-
-        self.button_test = Button(on_press=self.go_to_test,
-                             size=(20,20), pos=(230, 260),
-                             background_color=(255, 0, 0, 100),
-                             background_normal=''
-                             )
+        self.scatter_plane = self.scatter_loader.all[self.cur_img_path]"""
 
         self.update_widgets()
+
+    def load_img(self):
+        all_arrs = {}
+        all_arrs.update(ImagesPaths.BUTTONS)
+        all_arrs.update(ImagesPaths.GUKA)
+        all_arrs.update(ImagesPaths.GUKB)
+        all_arrs.update(ImagesPaths.GUKV)
+
+        # Загружаем каждое изображение
+        for item in all_arrs:
+            path = all_arrs[item]
+            try:
+                self.img_map.source = path
+                self.scatter_plane.add_widget(self.img_map)
+                self.scatter_plane.clear_widgets()
+
+                print(f"Successfully loaded: {path}")
+            except Exception as e:
+                print(f"Failed to load {path}: {e}")
+
+        self.scatter_plane.clear_widgets()
+        self.img_map.source = self.cur_img_path
+        self.scatter_plane.add_widget(self.img_map)
 
 
     def update_widgets(self):
@@ -132,19 +178,16 @@ class MapScreen(Screen):
             Rectangle(size=(360*2, 640*2), pos=self.pos)
 
         self.scatter_plane.add_widget(self.img_map)
-        self.scatter_plane.add_widget(self.label1)
 
-        self.ux.add_widget(self.b_up)
-        self.ux.add_widget(self.b_dw)
-        self.ux.add_widget(self.b_pl)
-        self.ux.add_widget(self.b_mn)
+        self.ux.add_widget(self.img_up)
+        self.ux.add_widget(self.img_dw)
+        self.ux.add_widget(self.img_pl)
+        self.ux.add_widget(self.img_mn)
 
-        self.ux.add_widget(self.button_pl)
-        self.ux.add_widget(self.button_mn)
+        self.ux.add_widget(self.button_plus)
+        self.ux.add_widget(self.button_minus)
         self.ux.add_widget(self.button_up)
         self.ux.add_widget(self.button_down)
-
-        self.scatter_plane.add_widget(self.button_test)
 
         self.main_wig.add_widget(self.scatter_plane)
         self.main_wig.add_widget(self.ux)
@@ -157,13 +200,10 @@ class MapScreen(Screen):
 
         if self.cur_level < max(arr_levels):
             self.cur_level = arr_levels[arr_levels.index(self.cur_level)+1]
-        else:
-            self.cur_level = min(arr_levels)
 
         self.cur_img_path = self.cur_build[self.cur_level]
-        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
-        self.img_map.size = (360, 360)
-        self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
+
+        self.img_map.source = self.cur_img_path
 
         self.update_widgets()
 
@@ -173,13 +213,10 @@ class MapScreen(Screen):
 
         if self.cur_level > min(arr_levels):
             self.cur_level = arr_levels[arr_levels.index(self.cur_level) - 1]
-        else:
-            self.cur_level = max(arr_levels)
 
         self.cur_img_path = self.cur_build[self.cur_level]
-        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
-        self.img_map.size = (360, 360)
-        self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
+
+        self.img_map.source = self.cur_img_path
 
         self.update_widgets()
 
@@ -228,7 +265,7 @@ class MapScreen(Screen):
             self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
 
 
-class TextScreen(Screen):
+class MenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -236,7 +273,7 @@ class TextScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
 
         # Добавляем виджеты
-        label = Label(text='Это тестовый экран', font_size='30sp')
+        label = Label(text='Карта МАИ', font_size='30sp')
         button = Button(
             text='Открыть карту',
             size_hint_y=0.3,
@@ -262,11 +299,11 @@ class MainApp(App):
         screen_manager = ScreenManager()
 
         first_screen = MapScreen(name='map')
-        second_screen = TextScreen(name='test')
+        second_screen = MenuScreen(name='menu')
 
         screen_manager.add_widget(first_screen)
         screen_manager.add_widget(second_screen)
 
-        screen_manager.current = 'test'
+        screen_manager.current = 'menu'
 
         return screen_manager

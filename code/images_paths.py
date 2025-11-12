@@ -1,5 +1,11 @@
 class ImagesPaths:
     OUTSIDE = 'assets/sprites/plan_MAI/MAI_plan_compact-2025.png'
+    BUTTONS = {
+        'up': 'assets/sprites/buttons/button_up.png',
+        'down': 'assets/sprites/buttons/button_down.png',
+        'plus': 'assets/sprites/buttons/plus.png',
+        'minus': 'assets/sprites/buttons/minus.png',
+    }
     GUKA = {
         1: 'assets/sprites/GUK/A/GUKA1.png',
         2: 'assets/sprites/GUK/A/GUKA2.png',
