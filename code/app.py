@@ -137,6 +137,7 @@ class MapScreen(Screen):
 
         self.scatter_plane = self.scatter_loader.all[self.cur_img_path]"""
 
+        self.add_ux()
         self.update_widgets()
 
     def load_img(self):
@@ -162,23 +163,7 @@ class MapScreen(Screen):
         self.img_map.source = self.cur_img_path
         self.scatter_plane.add_widget(self.img_map)
 
-
-    def update_widgets(self):
-        self.scatter_plane.pos = (0, 0)
-        self.scatter_plane.rotation = 0
-        self.scatter_plane.translation = (0, 0)
-        self.scatter_plane.scale = 1.5
-        self.scatter_plane.clear_widgets()
-        self.ux.clear_widgets()
-        self.main_wig.clear_widgets()
-        self.clear_widgets()
-
-        with self.canvas.before:
-            Color(1, 1, 1, 1)
-            Rectangle(size=(360*2, 640*2), pos=self.pos)
-
-        self.scatter_plane.add_widget(self.img_map)
-
+    def add_ux(self):
         self.ux.add_widget(self.img_up)
         self.ux.add_widget(self.img_dw)
         self.ux.add_widget(self.img_pl)
@@ -188,6 +173,32 @@ class MapScreen(Screen):
         self.ux.add_widget(self.button_minus)
         self.ux.add_widget(self.button_up)
         self.ux.add_widget(self.button_down)
+
+    def update_widgets(self):
+        self.scatter_plane.pos = (0, 0)
+        self.scatter_plane.rotation = 0
+        self.scatter_plane.translation = (0, 0)
+        self.scatter_plane.scale = 1.5
+        self.scatter_plane.clear_widgets()
+        # self.ux.clear_widgets()
+        self.main_wig.clear_widgets()
+        self.clear_widgets()
+
+        with self.canvas.before:
+            Color(1, 1, 1, 1)
+            Rectangle(size=(360*2, 640*2), pos=self.pos)
+
+        self.scatter_plane.add_widget(self.img_map)
+
+        """self.ux.add_widget(self.img_up)
+        self.ux.add_widget(self.img_dw)
+        self.ux.add_widget(self.img_pl)
+        self.ux.add_widget(self.img_mn)
+
+        self.ux.add_widget(self.button_plus)
+        self.ux.add_widget(self.button_minus)
+        self.ux.add_widget(self.button_up)
+        self.ux.add_widget(self.button_down)"""
 
         self.main_wig.add_widget(self.scatter_plane)
         self.main_wig.add_widget(self.ux)
