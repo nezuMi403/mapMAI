@@ -379,7 +379,7 @@ class MapScreen(Screen):
         all_arrs = {}
 
         all_arrs.update(ImagesPaths.BUTTONS)
-        all_arrs.update(ImagesPaths.GUKA)
+        """all_arrs.update(ImagesPaths.GUKA)
         for item in all_arrs:
             path = all_arrs[item]
             try:
@@ -400,11 +400,8 @@ class MapScreen(Screen):
 
                 print(f"Successfully loaded: {path}")
             except Exception as e:
-                print(f"Failed to load {path}: {e}")
+                print(f"Failed to load {path}: {e}")"""
         all_arrs.update(ImagesPaths.GUKV)
-
-        print(ImagesPaths.GUKA)
-        print(all_arrs)
 
         # Загружаем каждое изображение
         for item in all_arrs:
@@ -513,7 +510,21 @@ class MapScreen(Screen):
         old_pos = self.scatter_plane.pos
 
         # Вычисляем новый масштаб
-        new_scale = max(self.scatter_plane.scale_min, old_scale - 0.2)
+        new_scale = min(self.scatter_plane.scale_max, old_scale - 0.2)
+
+        # Если масштаб изменился
+        if new_scale != old_scale:
+            # Вычисляем центр экрана
+            center_x = 360 * 1.5 / 2
+            center_y = 640 * 1.5 / 2
+
+            # Вычисляем смещение для масштабирования к центру
+            dx = (center_x - old_pos[0]) * (new_scale / old_scale - 1)
+            dy = (center_y - old_pos[1]) * (new_scale / old_scale - 1)
+
+            # Применяем новый масштаб и позицию
+            self.scatter_plane.scale = new_scale
+            self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
 
     def back(self, instance):
         if self.cur_build is ImagesPaths.OUTSIDE:
