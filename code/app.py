@@ -38,7 +38,7 @@ class OutsideScreen(Screen):
         self.scatter_plane.scale_max = 5
         self.scatter_plane.scale_min = 1.5
 
-        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
+        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=False)
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
 
@@ -289,7 +289,7 @@ class MapScreen(Screen):
         self.scatter_plane.scale_max = 5
         self.scatter_plane.scale_min = 1.5
 
-        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
+        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=False)
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
 
@@ -377,10 +377,34 @@ class MapScreen(Screen):
 
     def load_img(self):
         all_arrs = {}
+
         all_arrs.update(ImagesPaths.BUTTONS)
         all_arrs.update(ImagesPaths.GUKA)
+        for item in all_arrs:
+            path = all_arrs[item]
+            try:
+                self.img_map.source = path
+                self.scatter_plane.add_widget(self.img_map)
+                self.scatter_plane.clear_widgets()
+
+                print(f"Successfully loaded: {path}")
+            except Exception as e:
+                print(f"Failed to load {path}: {e}")
         all_arrs.update(ImagesPaths.GUKB)
+        for item in all_arrs:
+            path = all_arrs[item]
+            try:
+                self.img_map.source = path
+                self.scatter_plane.add_widget(self.img_map)
+                self.scatter_plane.clear_widgets()
+
+                print(f"Successfully loaded: {path}")
+            except Exception as e:
+                print(f"Failed to load {path}: {e}")
         all_arrs.update(ImagesPaths.GUKV)
+
+        print(ImagesPaths.GUKA)
+        print(all_arrs)
 
         # Загружаем каждое изображение
         for item in all_arrs:
@@ -491,28 +515,16 @@ class MapScreen(Screen):
         # Вычисляем новый масштаб
         new_scale = max(self.scatter_plane.scale_min, old_scale - 0.2)
 
-        # Если масштаб изменился
-        if new_scale != old_scale:
-            # Вычисляем центр экрана
-            center_x = 360 * 1.5 / 2
-            center_y = 640 * 1.5 / 2
-
-            # Вычисляем смещение для масштабирования к центру
-            dx = (center_x - old_pos[0]) * (new_scale / old_scale - 1)
-            dy = (center_y - old_pos[1]) * (new_scale / old_scale - 1)
-
-            # Применяем новый масштаб и позицию
-            self.scatter_plane.scale = new_scale
-            self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
     def back(self, instance):
         if self.cur_build is ImagesPaths.OUTSIDE:
             self.go_to_menu_screen(instance)
             return
-        self.cur_build = ImagesPaths.OUTSIDE
+        self.go_to_outsude(instance)
+        """"self.cur_build = ImagesPaths.OUTSIDE
         self.cur_level = min(self.cur_build.keys())
         self.cur_img_path = self.cur_build[self.cur_level]
         self.img_map.source = self.cur_img_path
-        self.update_widgets()
+        self.update_widgets()"""
 
     def go_to_menu_screen(self, instance):
         self.manager.transition = SlideTransition(
@@ -521,6 +533,12 @@ class MapScreen(Screen):
         )
         self.manager.current = 'menu'
 
+    def go_to_outsude(self, instance):
+        self.manager.transition = SlideTransition(
+            direction='right',  # 'left', 'right', 'up', 'down'
+            duration=0.5  # длительность в секундах
+        )
+        self.manager.current = 'outside'
 
 class MenuScreen(Screen):
     def __init__(self, **kwargs):
