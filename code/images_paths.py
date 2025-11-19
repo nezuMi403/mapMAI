@@ -9,13 +9,13 @@ class ImagesPaths:
         'back': 'assets/sprites/buttons/square_buttons_blue/MediumArrow-Left-Idle.png'
     }
     GUKA = {
-        #1: 'assets/sprites/GUK/A/GUKA1.png',
-        2: 'assets/sprites/GUK/A/GUKA2.png',
-        3: 'assets/sprites/GUK/A/GUKA3.png',
-        #4: 'assets/sprites/GUK/A/GUKA4.png',
-        5: 'assets/sprites/GUK/A/GUKA5.png',
-        6: 'assets/sprites/GUK/A/GUKA6.png',
-        7: 'assets/sprites/GUK/A/GUKA7.png',
+        1: 'assets/sprites/GUK/A/GUKA1_res.png',
+        2: 'assets/sprites/GUK/A/GUKA2_res.png',
+        3: 'assets/sprites/GUK/A/GUKA3_res.png',
+        4: 'assets/sprites/GUK/A/GUKA4_res.png',
+        5: 'assets/sprites/GUK/A/GUKA5_res.png',
+        6: 'assets/sprites/GUK/A/GUKA6_res.png',
+        7: 'assets/sprites/GUK/A/GUKA7_res.png',
     }
     GUKB = {
         2: 'assets/sprites/GUK/B/GUKB2.png',

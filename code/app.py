@@ -38,6 +38,7 @@ class MapScreen(Screen):
         self.scatter_plane.scale_max = 5
         self.scatter_plane.scale_min = 1.5
 
+        # print(self.cur_build, self.cur_level, self.cur_img_path)
         self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
@@ -125,44 +126,23 @@ class MapScreen(Screen):
         self.update_widgets()
 
     def load_img(self):
-        all_arrs = {}
+        arrs = [
+            ImagesPaths.BUTTONS,
+            ImagesPaths.GUKA,
+            #ImagesPaths.GUKB,
+            ImagesPaths.GUKV,
+        ]
+        for arr in arrs:
+            for item in arr:
+                path = arr[item]
+                try:
+                    self.img_map.source = path
+                    self.scatter_plane.add_widget(self.img_map)
+                    self.scatter_plane.clear_widgets()
 
-        all_arrs.update(ImagesPaths.BUTTONS)
-        """all_arrs.update(ImagesPaths.GUKA)
-        for item in all_arrs:
-            path = all_arrs[item]
-            try:
-                self.img_map.source = path
-                self.scatter_plane.add_widget(self.img_map)
-                self.scatter_plane.clear_widgets()
-
-                print(f"Successfully loaded: {path}")
-            except Exception as e:
-                print(f"Failed to load {path}: {e}")
-        all_arrs.update(ImagesPaths.GUKB)
-        for item in all_arrs:
-            path = all_arrs[item]
-            try:
-                self.img_map.source = path
-                self.scatter_plane.add_widget(self.img_map)
-                self.scatter_plane.clear_widgets()
-
-                print(f"Successfully loaded: {path}")
-            except Exception as e:
-                print(f"Failed to load {path}: {e}")"""
-        all_arrs.update(ImagesPaths.GUKV)
-
-        # Загружаем каждое изображение
-        for item in all_arrs:
-            path = all_arrs[item]
-            try:
-                self.img_map.source = path
-                self.scatter_plane.add_widget(self.img_map)
-                self.scatter_plane.clear_widgets()
-
-                print(f"Successfully loaded: {path}")
-            except Exception as e:
-                print(f"Failed to load {path}: {e}")
+                    print(f"Successfully load ed: {path}")
+                except Exception as e:
+                    print(f"Failed to load {path}: {e}")
 
         self.scatter_plane.clear_widgets()
         self.img_map.source = self.cur_img_path
@@ -300,10 +280,6 @@ class MapScreen(Screen):
         )
         self.manager.current = 'outside'
 
-"""class OutsideScreen(MapScreen):
-    def __init__(self, cur_build**kwargs):
-        super().__init__(cur_build=ImagesPaths.OUTSIDE, **kwargs)"""
-
 class MenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -353,12 +329,11 @@ class MenuScreen(Screen):
         self.manager.current = 'outside'
 
     def set_guka(self, instance):
-        return
         self.manager.transition = SlideTransition(
             direction='right',  # 'left', 'right', 'up', 'down'
             duration=0.5  # длительность в секундах
         )
-        self.manager.current = 'gukv'
+        self.manager.current = 'guka'
 
     def set_gukb(self, instance):
         return
@@ -366,7 +341,7 @@ class MenuScreen(Screen):
             direction='right',  # 'left', 'right', 'up', 'down'
             duration=0.5  # длительность в секундах
         )
-        self.manager.current = 'gukv'
+        self.manager.current = 'gukb'
 
     def set_gukv(self, instance):
         self.manager.transition = SlideTransition(
@@ -386,12 +361,16 @@ class MainApp(App):
     def build(self):
         screen_manager = ScreenManager()
 
+        guka_screen = MapScreen(cur_build=ImagesPaths.GUKA, name='guka')
+        # gukb_screen = MapScreen(cur_build=ImagesPaths.GUKB, name='gukb')
         gukv_screen = MapScreen(cur_build=ImagesPaths.GUKV, name='gukv')
         menu_screen = MenuScreen(name='menu')
 
         outside_screen = MapScreen(cur_build=ImagesPaths.OUTSIDE, name='outside')
 
         screen_manager.add_widget(menu_screen)
+        screen_manager.add_widget(guka_screen)
+        #screen_manager.add_widget(gukb_screen)
         screen_manager.add_widget(gukv_screen)
         screen_manager.add_widget(outside_screen)
 
