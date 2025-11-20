@@ -1,9 +1,10 @@
+# map_screen.py
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.scatter import ScatterPlane
 from kivy.uix.widget import Widget
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.graphics import (Color, Line, Rectangle, Ellipse)
+from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.graphics import Color, Rectangle
 
 from code.images_paths import ImagesPaths
 
@@ -11,258 +12,118 @@ from code.images_paths import ImagesPaths
 class MapScreen(Screen):
     def __init__(self, cur_build, **kwargs):
         super().__init__(**kwargs)
-
-        self.cur_level = min(list(cur_build.keys()))
         self.cur_build = cur_build
-        self.cur_img_path = self.cur_build[self.cur_level]
+        self.cur_level = min(list(cur_build.keys()))
+        self._setup_ui()
+
+    def _setup_ui(self):
+        # Создаем белый фон один раз
+        with self.canvas.before:
+            Color(1, 1, 1, 1)
+            self.bg_rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(size=self._update_bg, pos=self._update_bg)
 
         self.main_wig = Widget()
-        self.ux = ScatterPlane(scale=1.5,
-                          do_translation=False,
-                          do_rotation=False,
-                          do_scale=False)
+        self.ux = ScatterPlane(scale=1.5, do_translation=False, do_rotation=False, do_scale=False)
 
-        self.scatter_plane = ScatterPlane(scale=1.5)
-        self.scatter_plane.pos = (0, 0)
-        self.scatter_plane.scale_max = 5
-        self.scatter_plane.scale_min = 1.5
+        self.scatter_plane = ScatterPlane(scale=1.5, scale_max=5, scale_min=1.5)
+        self.img_map = Image(source=self.cur_build[self.cur_level], mipmap=True)
+        self._update_image_position()
 
-        self.img_map = Image(source=self.cur_img_path, pos=(0, 0), mipmap=True)
+        self.scatter_plane.add_widget(self.img_map)
+        self._create_controls()
+        self._assemble_ui()
+
+    def _update_bg(self, instance, value):
+        self.bg_rect.size = instance.size
+        self.bg_rect.pos = instance.pos
+
+    def _update_image_position(self):
         self.img_map.size = (360, 360)
         self.img_map.pos = ((360 - self.img_map.width) // 2, (640 - self.img_map.height) // 2)
 
-        self.load_img()
-
+    def _create_controls(self):
         d = 0.8
-        self.img_up = Image(
-            source=ImagesPaths.BUTTONS['up'],
-            pos=(360 - 40, 640 - 200),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-
-        self.button_up = Button(
-            on_press=self.up,
-            size=self.img_up.size, pos=self.img_up.pos,
-            background_color=(255, 0, 0, 0),
-            background_normal=''
-        )
-        self.img_dw = Image(
-            source=ImagesPaths.BUTTONS['down'],
-            pos=(360 - 40, 640 - 250),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-        self.button_down = Button(
-            on_press=self.down,
-            size=self.img_dw.size, pos=self.img_dw.pos,
-            background_color=(0, 255, 0, 0),
-            background_normal=''
-        )
-        self.img_pl = Image(
-            source=ImagesPaths.BUTTONS['plus'],
-            pos=(360 - 40, 640 - 330),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-        self.button_plus = Button(on_press=self.plus,
-                                  size=self.img_pl.size, pos=self.img_pl.pos,
-                                  background_color=(0, 0, 0, 0),
-                                  background_normal=''
-                                  )
-        self.img_mn = Image(
-            source=ImagesPaths.BUTTONS['minus'],
-            pos=(360 - 40, 640 - 380),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-        self.button_minus = Button(on_press=self.minus,
-                                   size=self.img_mn.size, pos=self.img_mn.pos,
-                                   color=(0, 0, 0, 0),
-                                   background_color=(0, 0, 0, 0),
-                                   background_normal=''
-                                   )
-
-
-        self.img_menu = Image(
-            source=ImagesPaths.BUTTONS['menu'],
-            pos=(360 - 320, 640 - 40),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-
-        self.button_menu = Button(on_press=self.go_to_menu_screen,
-                                  size=self.img_menu.size, pos=self.img_menu.pos,
-                                  background_color=(0, 0, 0, 0),
-                                  background_normal=''
-                                  )
-
-        self.img_back = Image(
-            source=ImagesPaths.BUTTONS['back'],
-            pos=(360 - 270, 640 - 40),
-            size=(50 * d, 50 * d),
-            mipmap=True,
-        )
-        self.button_back = Button(on_press=self.back,
-                                  size=self.img_back.size, pos=self.img_back.pos,
-                                  background_color=(0, 0, 0, 0),
-                                  background_normal=''
-                                  )
-
-        self.add_ux()
-        self.update_widgets()
-
-    def load_img(self):
-        arrs = [
-            ImagesPaths.BUTTONS,
-            ImagesPaths.GUKA,
-            #ImagesPaths.GUKB,
-            ImagesPaths.GUKV,
+        controls_data = [
+            ('up', (360 - 40, 640 - 200), self.up),
+            ('down', (360 - 40, 640 - 250), self.down),
+            ('plus', (360 - 40, 640 - 330), self.plus),
+            ('minus', (360 - 40, 640 - 380), self.minus),
+            ('menu', (360 - 320, 640 - 40), self.go_to_menu_screen),
+            ('back', (360 - 270, 640 - 40), self.back)
         ]
-        for arr in arrs:
-            for item in arr:
-                path = arr[item]
-                try:
-                    self.img_map.source = path
-                    self.scatter_plane.add_widget(self.img_map)
-                    self.scatter_plane.clear_widgets()
 
-                    print(f"Successfully load ed: {path}")
-                except Exception as e:
-                    print(f"Failed to load {path}: {e}")
+        for img_type, pos, callback in controls_data:
+            img = Image(
+                source=ImagesPaths.BUTTONS[img_type],
+                pos=pos,
+                size=(50 * d, 50 * d),
+                mipmap=True,
+            )
+            btn = Button(
+                on_press=callback,
+                size=img.size,
+                pos=img.pos,
+                background_color=(0, 0, 0, 0),
+                background_normal=''
+            )
+            self.ux.add_widget(img)
+            self.ux.add_widget(btn)
 
-        self.scatter_plane.clear_widgets()
-        self.img_map.source = self.cur_img_path
-        self.scatter_plane.add_widget(self.img_map)
-
-    def add_ux(self):
-        self.ux.add_widget(self.img_up)
-        self.ux.add_widget(self.img_dw)
-        self.ux.add_widget(self.img_pl)
-        self.ux.add_widget(self.img_mn)
-
-        self.ux.add_widget(self.button_plus)
-        self.ux.add_widget(self.button_minus)
-        self.ux.add_widget(self.button_up)
-        self.ux.add_widget(self.button_down)
-
-        self.ux.add_widget(self.img_menu)
-        self.ux.add_widget(self.button_menu)
-        self.ux.add_widget(self.img_back)
-        self.ux.add_widget(self.button_back)
-
-    def update_widgets(self):
-        self.scatter_plane.pos = (0, 0)
-        self.scatter_plane.rotation = 0
-        self.scatter_plane.scale = 1.5
-        self.scatter_plane.clear_widgets()
-        # self.ux.clear_widgets()
-        self.main_wig.pos=(0, 0)
-
-        self.main_wig.clear_widgets()
-        self.clear_widgets()
-
-        self.scatter_plane.pos = (0, 0)
-        self.scatter_plane.rotation = 0
-        self.scatter_plane.scale = 1.5
-
-        with self.canvas.before:
-            Color(1, 1, 1, 1)
-            Rectangle(size=(360*2, 640*2), pos=self.pos)
-
-        self.scatter_plane.add_widget(self.img_map)
-
+    def _assemble_ui(self):
         self.main_wig.add_widget(self.scatter_plane)
         self.main_wig.add_widget(self.ux)
-
         self.add_widget(self.main_wig)
 
+    def _change_level(self, direction):
+        levels = sorted(self.cur_build.keys())
+        current_index = levels.index(self.cur_level)
+
+        new_index = current_index + direction
+        if 0 <= new_index < len(levels):
+            self.cur_level = levels[new_index]
+            self.img_map.source = self.cur_build[self.cur_level]
+            self.scatter_plane.scale = 1.5
+            self.scatter_plane.pos = (0, 0)
+            self.scatter_plane.rotation = 0
+
     def up(self, instance):
-        arr_levels = list(self.cur_build.keys())
-        arr_levels.sort()
-
-        if self.cur_level < max(arr_levels):
-            self.cur_level = arr_levels[arr_levels.index(self.cur_level)+1]
-
-        self.cur_img_path = self.cur_build[self.cur_level]
-
-        self.img_map.source = self.cur_img_path
-
-        self.update_widgets()
+        self._change_level(1)
 
     def down(self, instance):
-        arr_levels = list(self.cur_build.keys())
-        arr_levels.sort()
+        self._change_level(-1)
 
-        if self.cur_level > min(arr_levels):
-            self.cur_level = arr_levels[arr_levels.index(self.cur_level) - 1]
+    def _zoom(self, factor):
+        old_scale = self.scatter_plane.scale
+        new_scale = max(self.scatter_plane.scale_min,
+                        min(self.scatter_plane.scale_max, old_scale + factor))
 
-        self.cur_img_path = self.cur_build[self.cur_level]
+        if new_scale != old_scale:
+            center_x, center_y = 360 * 1.5 / 2, 640 * 1.5 / 2
+            old_pos = self.scatter_plane.pos
 
-        self.img_map.source = self.cur_img_path
+            dx = (center_x - old_pos[0]) * (new_scale / old_scale - 1)
+            dy = (center_y - old_pos[1]) * (new_scale / old_scale - 1)
 
-        self.update_widgets()
+            self.scatter_plane.scale = new_scale
+            self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
 
     def plus(self, instance):
-        # Запоминаем текущий масштаб и позицию
-        old_scale = self.scatter_plane.scale
-        old_pos = self.scatter_plane.pos
-
-        # Вычисляем новый масштаб
-        new_scale = min(self.scatter_plane.scale_max, old_scale + 0.2)
-
-        # Если масштаб изменился
-        if new_scale != old_scale:
-            # Вычисляем центр экрана
-            center_x = 360 * 1.5 / 2
-            center_y = 640 * 1.5 / 2
-
-            # Вычисляем смещение для масштабирования к центру
-            dx = (center_x - old_pos[0]) * (new_scale / old_scale - 1)
-            dy = (center_y - old_pos[1]) * (new_scale / old_scale - 1)
-
-            # Применяем новый масштаб и позицию
-            self.scatter_plane.scale = new_scale
-            self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
+        self._zoom(0.2)
 
     def minus(self, instance):
-        # Запоминаем текущий масштаб и позицию
-        old_scale = self.scatter_plane.scale
-        old_pos = self.scatter_plane.pos
-
-        # Вычисляем новый масштаб
-        new_scale = min(self.scatter_plane.scale_max, old_scale - 0.2)
-
-        # Если масштаб изменился
-        if new_scale != old_scale:
-            # Вычисляем центр экрана
-            center_x = 360 * 1.5 / 2
-            center_y = 640 * 1.5 / 2
-
-            # Вычисляем смещение для масштабирования к центру
-            dx = (center_x - old_pos[0]) * (new_scale / old_scale - 1)
-            dy = (center_y - old_pos[1]) * (new_scale / old_scale - 1)
-
-            # Применяем новый масштаб и позицию
-            self.scatter_plane.scale = new_scale
-            self.scatter_plane.pos = (old_pos[0] - dx, old_pos[1] - dy)
+        self._zoom(-0.2)
 
     def back(self, instance):
         if self.cur_build is ImagesPaths.OUTSIDE:
             self.go_to_menu_screen(instance)
-            return
-        self.go_to_outsude(instance)
+        else:
+            self.go_to_outsude(instance)
 
     def go_to_menu_screen(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
+        self.manager.transition = SlideTransition(direction='right', duration=0.2)
         self.manager.current = 'menu'
 
     def go_to_outsude(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
+        self.manager.transition = SlideTransition(direction='right', duration=0.2)
         self.manager.current = 'outside'

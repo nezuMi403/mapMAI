@@ -1,119 +1,79 @@
+# app.py
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.config import Config
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+#from kivy.core.window import Window
 
 from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
 
-
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
 Config.set('graphics', 'height', 640)
+#Window.size = (360, 640)
+
 
 class MainScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.params = {
-            'cur_build': None
-        }
+        self.params = {'cur_build': None}
+
 
 class MenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self._create_ui()
 
-        # Создаем layout для второго экрана
+    def _create_ui(self):
         layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
 
-        # Добавляем виджеты
-        label = Label(text='Карта МАИ', font_size='30sp')
-        button1 = Button(
-            text='Открыть карту',
-            size_hint_y=0.3,
-            on_press=self.set_outside
-        )
+        widgets = [
+            Label(text='Карта МАИ', font_size='30sp'),
+            Button(text='Открыть карту', size_hint_y=0.3, on_press=self.set_outside),
+            Button(text='ГУК А', size_hint_y=0.3, on_press=self.set_guka),
+            Button(text='ГУК Б', size_hint_y=0.3, on_press=self.set_gukb),
+            Button(text='ГУК В', size_hint_y=0.3, on_press=self.set_gukv)
+        ]
 
-        button2 = Button(
-            text='ГУК А',
-            size_hint_y=0.3,
-            on_press=self.set_guka
-        )
-        button3 = Button(
-            text='ГУК Б',
-            size_hint_y=0.3,
-            on_press=self.set_gukb
-        )
-        button4 = Button(
-            text='ГУК В',
-            size_hint_y=0.3,
-            on_press=self.set_gukv,
-        )
+        for widget in widgets:
+            layout.add_widget(widget)
 
-        layout.add_widget(label)
-        layout.add_widget(button1)
-        layout.add_widget(button2)
-        layout.add_widget(button3)
-        layout.add_widget(button4)
-
-
-        # Добавляем layout в экран
         self.add_widget(layout)
 
+    def _switch_screen(self, screen_name):
+        self.manager.transition = SlideTransition(direction='right', duration=0.2)
+        self.manager.current = screen_name
+
     def set_outside(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
-        self.manager.current = 'outside'
+        self._switch_screen('outside')
 
     def set_guka(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
-        self.manager.current = 'guka'
+        self._switch_screen('guka')
 
     def set_gukb(self, instance):
-        return
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
-        self.manager.current = 'gukb'
+        # return  # Раскомментируйте когда добавите экран ГУК Б
+        self._switch_screen('gukb')
 
     def set_gukv(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='right',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
-        self.manager.current = 'gukv'
+        self._switch_screen('gukv')
 
-    def go_to_map_screen(self, instance):
-        self.manager.transition = SlideTransition(
-            direction='left',  # 'left', 'right', 'up', 'down'
-            duration=0.5  # длительность в секундах
-        )
-        self.manager.current = 'gukv'
 
 class MainApp(App):
     def build(self):
         screen_manager = MainScreenManager()
 
-        guka_screen = MapScreen(cur_build=ImagesPaths.GUKA, name='guka')
-        # gukb_screen = MapScreen(cur_build=ImagesPaths.GUKB, name='gukb')
-        gukv_screen = MapScreen(cur_build=ImagesPaths.GUKV, name='gukv')
-        menu_screen = MenuScreen(name='menu')
+        screens = [
+            MapScreen(cur_build=ImagesPaths.GUKA, name='guka'),
+            MapScreen(cur_build=ImagesPaths.GUKV, name='gukv'),
+            MenuScreen(name='menu'),
+            MapScreen(cur_build=ImagesPaths.OUTSIDE, name='outside')
+        ]
 
-        outside_screen = MapScreen(cur_build=ImagesPaths.OUTSIDE, name='outside')
-
-        screen_manager.add_widget(menu_screen)
-        screen_manager.add_widget(guka_screen)
-        #screen_manager.add_widget(gukb_screen)
-        screen_manager.add_widget(gukv_screen)
-        screen_manager.add_widget(outside_screen)
+        for screen in screens:
+            screen_manager.add_widget(screen)
 
         screen_manager.current = 'menu'
-
         return screen_manager
