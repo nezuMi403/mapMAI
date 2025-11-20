@@ -13,6 +13,12 @@ Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
 Config.set('graphics', 'height', 640)
 
+class MainScreenManager(ScreenManager):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.params = {
+            'cur_build': None
+        }
 
 class MenuScreen(Screen):
     def __init__(self, **kwargs):
@@ -93,7 +99,7 @@ class MenuScreen(Screen):
 
 class MainApp(App):
     def build(self):
-        screen_manager = ScreenManager()
+        screen_manager = MainScreenManager()
 
         guka_screen = MapScreen(cur_build=ImagesPaths.GUKA, name='guka')
         # gukb_screen = MapScreen(cur_build=ImagesPaths.GUKB, name='gukb')
