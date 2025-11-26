@@ -3,36 +3,54 @@ NAVIGATION_DATA = {
     'guka': {  # здание ГУК А
         2: {  # этаж 2
             'coordinates': {
-                1: (200, 370),
-                2: (100, 320),
-                3: (200, 270),
+                "SGV_GUKA_2_k_209": (200, 370),
+                "SGV_GUKA_2_k_210": (100, 320),
+                "SGV_GUKA_2_k_211": (200, 270),
             },
-            'connections': [(1, 2), (2, 3)]
+            'connections': [("SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210"),
+                          ("SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211")]
         },
         3: {  # этаж 3
             'coordinates': {
-                4: (120, 180),
-                5: (170, 230),
+                "SGV_GUKA_3_k_309": (120, 180),
+                "SGV_GUKA_3_k_310": (170, 230),
             },
-            'connections': [(4, 5)]
+            'connections': [("SGV_GUKA_3_k_309", "SGV_GUKA_3_k_310")]
         }
     },
     'gukv': {  # здание ГУК В
         3: {
             'coordinates': {
-                6: (80, 160),
-                7: (130, 210),
+                "SGV_GUKV_3_k_301": (80, 160),
+                "SGV_GUKV_3_k_302": (130, 210),
             },
-            'connections': [(6, 7)]
+            'connections': [("SGV_GUKV_3_k_301", "SGV_GUKV_3_k_302")]
         }
     },
     'outside': {  # уличная карта
         0: {
             'coordinates': {
-                8: (50, 100),
-                9: (200, 150),
+                "S_Streshnevo_i_1": (50, 100),
+                "S_Streshnevo_i_2": (200, 150),
             },
-            'connections': [(8, 9)]
+            'connections': [("S_Streshnevo_i_1", "S_Streshnevo_i_2")]
         }
     }
 }
+
+# Собираем все точки в один список для удобства поиска
+ALL_POINTS = []
+
+for building, levels in NAVIGATION_DATA.items():
+    for level, data in levels.items():
+        if 'coordinates' in data:
+            for point_name, coords in data['coordinates'].items():
+                ALL_POINTS.append({
+                    'name': point_name,
+                    'building': building,
+                    'level': level,
+                    'coordinates': coords
+                })
+
+# Сортируем точки по имени для удобного отображения
+ALL_POINTS.sort(key=lambda x: x['name'])

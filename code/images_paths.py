@@ -6,7 +6,8 @@ class ImagesPaths:
         'plus': 'assets/sprites/buttons/plus_push_up.png',
         'minus': 'assets/sprites/buttons/minus_push_u.png',
         'menu': 'assets/sprites/buttons/square_buttons_blue/Levels-Idle.png',
-        'back': 'assets/sprites/buttons/square_buttons_blue/MediumArrow-Left-Idle.png'
+        'back': 'assets/sprites/buttons/square_buttons_blue/MediumArrow-Left-Idle.png',
+        'search': 'assets/sprites/buttons/square_buttons_blue/Question-Idle.png'
     }
     """GUKA = {
         1: 'assets/sprites/GUK/A/GUKA1_res.png',

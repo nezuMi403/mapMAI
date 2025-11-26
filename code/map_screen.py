@@ -22,6 +22,27 @@ class MapScreen(Screen):
 
         self._setup_ui()
 
+    def on_enter(self):
+        """Вызывается при входе на экран"""
+        # Если есть сохраненные точки в параметрах, строим маршрут
+        if hasattr(self.manager, 'params'):
+            start_point = self.manager.params.get('start_point')
+            end_point = self.manager.params.get('end_point')
+
+            if start_point and end_point and start_point['building'] == self.name:
+                # Устанавливаем нужный этаж
+                if start_point['level'] != self.cur_level and start_point['level'] in self.cur_build:
+                    self.cur_level = start_point['level']
+                    self.img_map.source = self.cur_build[self.cur_level]
+                    self.scatter_plane.scale = 1.5
+                    self.scatter_plane.pos = (0, 0)
+                    self.scatter_plane.rotation = 0
+
+                start, end = start_point['name'], end_point['name']
+                route_nodes = [start, end]
+                # TODO: построение маршрута
+                self.set_route(route_nodes)
+
     def _setup_ui(self):
         # Создаем белый фон один раз
         with self.canvas.before:
@@ -63,7 +84,8 @@ class MapScreen(Screen):
             ('plus', (360 - 40, 640 - 330), self.plus),
             ('minus', (360 - 40, 640 - 380), self.minus),
             ('menu', (360 - 320, 640 - 40), self.go_to_menu_screen),
-            ('back', (360 - 270, 640 - 40), self.back)
+            ('back', (360 - 270, 640 - 40), self.back),
+            ('search', (320, 600), self.search),
         ]
 
         for img_type, pos, callback in controls_data:
@@ -153,6 +175,11 @@ class MapScreen(Screen):
         else:
             self.go_to_outsude(instance)
 
+    def search(self, instance):
+        """Переход на экран поиска"""
+        self.manager.transition = SlideTransition(direction='left')
+        self.manager.current = 'search'
+
     def go_to_menu_screen(self, instance):
         self.manager.transition = SlideTransition(direction='right', duration=0.2)
         self.manager.current = 'menu'
@@ -164,10 +191,4 @@ class MapScreen(Screen):
     def test_route(self, instance):
         """Тестовый метод для отображения маршрута"""
         if self.name == 'guka' and self.cur_level == 2:
-            self.set_route([1, 2, 3, 4])  # Маршрут для ГУК А, этаж 2
-        elif self.name == 'guka' and self.cur_level == 3:
-            self.set_route([4, 5])  # Маршрут для ГУК А, этаж 3
-        elif self.name == 'gukv' and self.cur_level == 3:
-            self.set_route([6, 7])  # Маршрут для ГУК В, этаж 3
-        elif self.name == 'outside' and self.cur_level == 0:
-            self.set_route([8, 9])  # Маршрут для уличной карты
+            self.set_route(["SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211", "SGV_GUKA_3_k_309"])

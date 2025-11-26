@@ -24,6 +24,7 @@ h - hall
 
 Kabinets: int / -1 - like Teremok
 '''
+
 import sys
 from pprint import pprint
 
