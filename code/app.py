@@ -9,6 +9,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
 from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
+from code.navigation_data import NAVIGATION_DATA
 
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
@@ -54,7 +55,7 @@ class MenuScreen(Screen):
         self._switch_screen('guka')
 
     def set_gukb(self, instance):
-        # return  # Раскомментируйте когда добавите экран ГУК Б
+        return  # Раскомментируйте когда добавите экран ГУК Б
         self._switch_screen('gukb')
 
     def set_gukv(self, instance):
@@ -73,6 +74,9 @@ class MainApp(App):
         ]
 
         for screen in screens:
+            # Передаем данные навигации каждому экрану
+            if hasattr(screen, 'set_navigation_data'):
+                screen.set_navigation_data(NAVIGATION_DATA)
             screen_manager.add_widget(screen)
 
         screen_manager.current = 'menu'

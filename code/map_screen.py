@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen, SlideTransition
 from kivy.graphics import Color, Rectangle
 
 from code.images_paths import ImagesPaths
+from code.route_renderer import RouteRenderer
 
 
 class MapScreen(Screen):
@@ -14,6 +15,11 @@ class MapScreen(Screen):
         super().__init__(**kwargs)
         self.cur_build = cur_build
         self.cur_level = min(list(cur_build.keys()))
+
+        self.navigation_data = {}  # Все данные навигации
+        self.connections = {}  # {уровень: [(id1, id2)]}
+        self.route_calculator = None  # Ваш класс для расчета маршрута
+
         self._setup_ui()
 
     def _setup_ui(self):
@@ -30,7 +36,14 @@ class MapScreen(Screen):
         self.img_map = Image(source=self.cur_build[self.cur_level], mipmap=True)
         self._update_image_position()
 
+        # Создаем renderer для маршрутов и добавляем его НА scatter_plane
+        self.route_renderer = RouteRenderer()
+        self.route_renderer.set_navigation_data(self.navigation_data)
+
+        # Добавляем сначала изображение, потом маршрут поверх него
         self.scatter_plane.add_widget(self.img_map)
+        self.scatter_plane.add_widget(self.route_renderer)  # Теперь маршрут на scatter_plane!
+
         self._create_controls()
         self._assemble_ui()
 
@@ -73,6 +86,7 @@ class MapScreen(Screen):
     def _assemble_ui(self):
         self.main_wig.add_widget(self.scatter_plane)
         self.main_wig.add_widget(self.ux)
+        # Убираем route_renderer отсюда, т.к. он теперь на scatter_plane
         self.add_widget(self.main_wig)
 
     def _change_level(self, direction):
@@ -86,6 +100,24 @@ class MapScreen(Screen):
             self.scatter_plane.scale = 1.5
             self.scatter_plane.pos = (0, 0)
             self.scatter_plane.rotation = 0
+
+            # Обновляем текущее положение в renderer
+            self.route_renderer.set_current_location(self.name, self.cur_level)
+
+    def set_navigation_data(self, navigation_data):
+        """Установить все данные навигации"""
+        self.navigation_data = navigation_data
+        self.route_renderer.set_navigation_data(navigation_data)
+        # Устанавливаем текущее положение
+        self.route_renderer.set_current_location(self.name, self.cur_level)
+
+    def set_route(self, route_nodes):
+        """Установить маршрут"""
+        self.route_renderer.set_route(route_nodes)
+
+    def clear_route(self):
+        """Очистить текущий маршрут"""
+        self.route_renderer.set_route([])
 
     def up(self, instance):
         self._change_level(1)
@@ -110,6 +142,7 @@ class MapScreen(Screen):
 
     def plus(self, instance):
         self._zoom(0.2)
+        self.test_route(instance)
 
     def minus(self, instance):
         self._zoom(-0.2)
@@ -127,3 +160,14 @@ class MapScreen(Screen):
     def go_to_outsude(self, instance):
         self.manager.transition = SlideTransition(direction='right', duration=0.2)
         self.manager.current = 'outside'
+
+    def test_route(self, instance):
+        """Тестовый метод для отображения маршрута"""
+        if self.name == 'guka' and self.cur_level == 2:
+            self.set_route([1, 2, 3, 4])  # Маршрут для ГУК А, этаж 2
+        elif self.name == 'guka' and self.cur_level == 3:
+            self.set_route([4, 5])  # Маршрут для ГУК А, этаж 3
+        elif self.name == 'gukv' and self.cur_level == 3:
+            self.set_route([6, 7])  # Маршрут для ГУК В, этаж 3
+        elif self.name == 'outside' and self.cur_level == 0:
+            self.set_route([8, 9])  # Маршрут для уличной карты

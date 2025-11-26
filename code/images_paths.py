@@ -8,7 +8,7 @@ class ImagesPaths:
         'menu': 'assets/sprites/buttons/square_buttons_blue/Levels-Idle.png',
         'back': 'assets/sprites/buttons/square_buttons_blue/MediumArrow-Left-Idle.png'
     }
-    GUKA = {
+    """GUKA = {
         1: 'assets/sprites/GUK/A/GUKA1_res.png',
         2: 'assets/sprites/GUK/A/GUKA2_res.png',
         3: 'assets/sprites/GUK/A/GUKA3_res.png',
@@ -30,4 +30,19 @@ class ImagesPaths:
         5: 'assets/sprites/GUK/V/GUKV5.png',
         6: 'assets/sprites/GUK/V/GUKV6.png',
         7: 'assets/sprites/GUK/V/GUKV7.png',
+    }"""
+
+    GUKA = {
+        2: "assets/sprites/GUK/A/gukA2.jpg",
+        3: "assets/sprites/GUK/A/gukA3.jpg",
+    }
+
+    GUKB = {
+        # 2: "assets/sprites/GUK/B/gukB2.jpg",
+        # 3: "assets/sprites/GUK/B/gukB3.jpg",
+    }
+
+    GUKV = {
+        # 2: "assets/sprites/GUK/V/gukV2.jpg",
+        3: "assets/sprites/GUK/V/gukV3.jpg",
     }
