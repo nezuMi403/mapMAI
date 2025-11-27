@@ -47,6 +47,7 @@ class RouteRenderer(Widget):
         with self.canvas:
             Color(0, 0, 1, 1)
             points = []
+            points2 = []
 
             for i in range(len(self.current_route) - 1):
                 node1 = self.current_route[i]
@@ -65,16 +66,21 @@ class RouteRenderer(Widget):
                     y2 = y2 * self.k + self.d
 
 
-
-                    # Координаты теперь относительно scatter_plane
                     points.extend([x1, y1, x2, y2])
-                    points.extend([x1, y1, x2, y2])
+                    #points2.extend([x1+0.3, y1, x2+0.2, y2])
 
 
             if points:
                 Line(
                     points=points,
-                    #width=1.1,
+                    width=1,
+                    dash_length=5,
+                    dash_offset=2,
+                )
+            if points2:
+                Line(
+                    points=points2,
+                    # width=1.1,
                     dash_length=5,
                     dash_offset=2,
                 )
