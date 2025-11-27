@@ -7,33 +7,39 @@ NAVIGATION_DATA = {
                 "SGV_GUKA_2_k_210": (100, 320),
                 "SGV_GUKA_2_k_211": (200, 270),
             },
-            'connections': [("SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210"),
-                          ("SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211")]
         },
         3: {  # этаж 3
             'coordinates': {
                 "SGV_GUKA_3_k_309": (120, 180),
                 "SGV_GUKA_3_k_310": (170, 230),
             },
-            'connections': [("SGV_GUKA_3_k_309", "SGV_GUKA_3_k_310")]
         }
     },
-    'gukv': {  # здание ГУК В
+    'gukv': {
         3: {
             'coordinates': {
-                "SGV_GUKV_3_k_301": (80, 160),
-                "SGV_GUKV_3_k_302": (130, 210),
-            },
-            'connections': [("SGV_GUKV_3_k_301", "SGV_GUKV_3_k_302")]
-        }
+                'S_GV_3_b_1': (4454, 4035),
+                'S_GV_3_f_1': (4130, 8800),
+                'S_GV_3_l_1': (6934, 4872),
+                'S_GV_3_l_2': (4785, 7026),
+                'S_GV_3_p_1': (8470, 4872),
+                'S_GV_3_p_2': (8470, 4192),
+                'S_GV_3_p_3': (4454, 4192),
+                'S_GV_3_p_4': (4130, 4192),
+                'S_GV_3_p_5': (4130, 8518),
+                'S_GV_3_p_6': (4785, 8518),
+                'test': (0, 0),
+                'test2': (10000, 10000),
+                'test3': (5000, 5000)
+            }
+            }
     },
     'outside': {  # уличная карта
         0: {
             'coordinates': {
                 "S_Streshnevo_i_1": (50, 100),
                 "S_Streshnevo_i_2": (200, 150),
-            },
-            'connections': [("S_Streshnevo_i_1", "S_Streshnevo_i_2")]
+            }
         }
     }
 }

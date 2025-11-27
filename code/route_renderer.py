@@ -10,6 +10,8 @@ class RouteRenderer(Widget):
         self.current_level = None
         self.navigation_data = {}  # {building: {level: {coordinates: {}, connections: []}}}
         self.current_route = []
+        self.k = 0.036
+        self.d = 280//2
 
     def set_navigation_data(self, navigation_data):
         """Установить все данные навигации"""
@@ -37,7 +39,6 @@ class RouteRenderer(Widget):
         building_data = self.navigation_data.get(self.current_building, {})
         level_data = building_data.get(self.current_level, {})
         coordinates = level_data.get('coordinates', {})
-        connections = level_data.get('connections', [])
 
         if not coordinates:
             return
@@ -55,8 +56,20 @@ class RouteRenderer(Widget):
                     x1, y1 = coordinates[node1]
                     x2, y2 = coordinates[node2]
 
+                    y1 = 10000 - y1
+                    y2 = 10000 - y2
+
+                    x1 = x1 * self.k
+                    y1 = y1 * self.k + self.d
+                    x2 = x2 * self.k
+                    y2 = y2 * self.k + self.d
+
+
+
                     # Координаты теперь относительно scatter_plane
                     points.extend([x1, y1, x2, y2])
+                    points.extend([x1, y1, x2, y2])
+
 
             if points:
                 Line(
@@ -71,5 +84,7 @@ class RouteRenderer(Widget):
             for node in self.current_route:
                 if node in coordinates:
                     x, y = coordinates[node]
+                    y = 10000 - y
+                    x, y = x * self.k, y * self.k + self.d
                     r = 4
                     Ellipse(pos=(x - r//2, y - r//2), size=(r, r))

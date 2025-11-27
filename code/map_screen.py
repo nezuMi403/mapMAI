@@ -190,11 +190,23 @@ class MapScreen(Screen):
 
     def test_route(self, instance):
         """Тестовый метод для отображения маршрута"""
-        if self.name == 'guka' and self.cur_level == 2:
+        if self.name == 'gukv' and self.cur_level == 3:
+            self.set_route([
+                "S_GV_3_l_1",
+                "S_GV_3_p_1",
+                "S_GV_3_p_2",
+                "S_GV_3_p_3",
+                "S_GV_3_p_4",
+                "S_GV_3_p_5",
+                "S_GV_3_p_6",
+                'S_GV_3_f_1'
+            ])
+        pass
+        """if self.name == 'guka' and self.cur_level == 2:
             self.set_route(["SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211"])
         elif self.name == 'guka' and self.cur_level == 3:
             self.set_route(["SGV_GUKA_3_k_309", "SGV_GUKA_3_k_310"])
         elif self.name == 'gukv' and self.cur_level == 3:
             self.set_route(["SGV_GUKV_3_k_301", "SGV_GUKV_3_k_302"])
         elif self.name == 'outside' and self.cur_level == 0:
-            self.set_route(["S_Streshnevo_i_1", "S_Streshnevo_i_2"])
+            self.set_route(["S_Streshnevo_i_1", "S_Streshnevo_i_2"])"""
