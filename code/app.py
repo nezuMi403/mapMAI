@@ -116,7 +116,8 @@ class MainApp(App):
     def build(self):
         self.graph = Graph()
         screen_manager = MainScreenManager()
-
+        navigation_data = self.graph.dict_of_points_coordinates
+        
         screens = [
             MenuScreen(name='menu'),
             MapScreen(self.graph, cur_build=ImagesPaths.GUKA, name='guka'),
@@ -130,7 +131,7 @@ class MainApp(App):
         for screen in screens:
             # Передаем данные навигации каждому экрану
             if hasattr(screen, 'set_navigation_data'):
-                screen.set_navigation_data(NAVIGATION_DATA)
+                screen.set_navigation_data(navigation_data)
             screen_manager.add_widget(screen)
 
         screen_manager.current = 'menu'
