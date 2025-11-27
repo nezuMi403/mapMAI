@@ -42,7 +42,8 @@ add_graph = ["S_GA_2_k_(200...214,216,218,200V)", "S_GA_2_p_(1...28)", "S_GA_2_e
              "S_GB_6_k_(631...633,635...648,650,652,654,656,658,660,662,664,629,627)", "S_GB_6_e_(1...4)",
              "S_GB_6_l_(1...4)", "S_GB_6_t_m", "S_GB_6_t_w", "S_GV_2_p_(1...25)", "S_GV_2_l_(1...7)",
              "S_GV_2_k_(221V,21V,202,212,228,231,240,240A,210,214)", "S_GV_2_e_(1...3)", "S_GA_7_p_(1...26)",
-             "S_GA_7_k_(704...722)", "S_GA_7_e_(1...4)", "S_GA_7_l_(1...3)", "S_GV_3_f_1", "S_GV_3_p_(1...6)", "S_GV_3_l_1D", "S_GV_3_l_2D", "S_GV_3_b_1"]
+             "S_GA_7_k_(704...722)", "S_GA_7_e_(1...4)", "S_GA_7_l_(1...3)", "S_GV_3_f_1", "S_GV_3_p_(1...6)", "S_GV_3_l_1D", "S_GV_3_l_2D", "S_GV_3_b_1",
+             "S_GV_7_p_(1...18)", "S_GV_7_k_(701...706)", "S_GV_7_l_1D", "S_GV_7_e_(1...3)", "S_GV_7_h_1",]
 add_points = {}
 nodes = []
 
@@ -57,76 +58,7 @@ l_2: (4785, 7026)
 p_5: (4130, 8518)
 p_6: (4785, 8518)
 f_1: (4130, 8800)
-""",
-"""S_GA_2_
-p_23: (3812, 3156)
-p_25: (4545, 3313)
-p_24: (3055, 3315)
-p_22: (3821, 3328)
-l_3U: (7534, 3424)
-l_3D: (7639, 3426)
-l_2U: (4944, 3430)
-l_2D: (4820, 3432)
-l_1U: (2782, 3444)
-l_1D: (2667, 3445)
-p_27: (4541, 3495)
-p_26: (3061, 3499)
-p_21: (3829, 3514)
-k_207: (1985, 3597)
-k_209: (1510, 3603)
-k_203: (6142, 3606)
-k_211: (1017, 3607)
-k_201: (7321, 3608)
-k_213: (548, 3613)
-k_205: (5636, 3622)
-# t_2: (5085, 3632)
-# t_1: (2481, 3673)
-#l1-9: (2716, 3699)
-p_29: (3822, 3791)
-p_11: (4881, 3794)
-p_19: (7561, 3796)
-# t_2-12: (5083, 3797)
-p_20: (7617, 3798)
-p_13: (5631, 3800)
-p_14: (5688, 3800)
-p_2: (530, 3801)
-p_18: (7352, 3801)
-p_15: (6135, 3802)
-p_1: (266, 3803)
-p_28: (3372, 3803)
-p_4: (1023, 3805)
-p_6: (1512, 3807)
-p_8: (2005, 3807)
-p_16: (6212, 3807)
-p_12: (5209, 3808)
-p_7: (1781, 3809)
-p_9: (2713, 3809)
-p_17: (7116, 3813)
-p_30: (4261, 3814)
-p_3: (827, 3818)
-p_5: (1302, 3818)
-k_212: (1774, 3962)
-k_216: (812, 3966)
-k_208: (5669, 3967)
-k_214: (1299, 3969)
-k_206: (6143, 3976)
-k_204: (7108, 3976)
-k_218: (265, 3977)
-k_210: (5182, 3989)
-k_202: (7585, 3989)
-p_35: (3375, 4069)
-l_4U: (3914, 4080)
-k_200B: (3049, 4081)
-l_4D: (3760, 4082)
-p_34: (3835, 4213)
-k_200: (4503, 4746)
-p_31: (4259, 4772)
-p_34: (3374, 5254)
-p_33: (3823, 5255)
-p_32: (4253, 5257)
-p_30: (3826, 5598)
-"""
-]
+"""]
 
 
 class Graph(object):
@@ -312,9 +244,9 @@ def initialization_graph(init_str: list) -> dict:
 
 def make_dictionar_of_points(sp_s:list, sl:dict) -> dict:
     '''Add coords of points to the dictionary'''
-
+    
     global init_graph
-
+    
     for s in sp_s:
         list_toDo = s.strip().split("\n")
         prefix, points = list_toDo[0], list_toDo[1:]
@@ -322,10 +254,10 @@ def make_dictionar_of_points(sp_s:list, sl:dict) -> dict:
         name_floor = int(prefix[-2])
         if name_building not in sl.keys():
             sl[name_building] = {}
-
+        
         if name_floor not in sl[name_building].keys():
             sl[name_building][name_floor] = {'coordinates' : {}, 'connections':[]}
-
+        
         print(name_building)
         for point in points:
             point = point.split(": ")
@@ -341,14 +273,22 @@ def make_dictionar_of_points(sp_s:list, sl:dict) -> dict:
                 sl[name_building][name_floor]['connections'].append((point_name, point_neightbor))
     return sl
 
+def return_shortest_path(input_point:str, output_point:str) -> list:
+    '''Return the shortest route from input_point ti utput_point'''
+    global graph
+    
+    # graph.give_graph()
+    previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=input_point)
+    print_result(previous_nodes, shortest_path, start_node=input_point, target_node=output_point)
+
 init_graph_connections = [
     "S_GA_2_|p24-p23,p23-k200/p22/l5U/l5D,p22-k200V/p10,p10-p9/p11/p18,p9-l1U/l1D/p8,p8-k207/p7,p7-k212/p6,p6-k209/p5,p5-k214/p4,p4-k211/p3,p3-k216/p2,p2-p1/k213,p1-k218,p11-l2U/l2D/p12,p12-k210/p13,p13-k205/k208/p14,p14-p15/k203/k206,p15-p16/k204,p16-p17/k201,p17-k202/l3U/l3D,p18-p26/p28/p19,p26-e3,p28-e4,p25-e1,p27-e2,p19-p25/p20/p27,p20-p21",
     "S_GA_3_|p1-k10/p2,p2-k12A/p3,p3-p4/k9,p4-p5/k12,p5-k8/p6,p6-k12B/p7,p7-k7/p8,p8-k11/p9,p9-k6/p10,p10-l1/p11,p11-p17/h1l,p17-p18/p16/l4,p18-p13/p14/p19,p13-p12,p12-e3,p14-p15,p15-e4,p19-e1/e2/p20,p16-h1r/p21,p21-l2/p22,p22-k2/p23,p23-k14/p24,p24-k1/p25,p25-p26/k3,p26-p27/k4,p27-k13/p28,p28-k5/p29,p29-b15/p30,p30-l3/p31,p31-p32/p33,p33-p35,p35-a300,p32-p34,p34-a300",
-    # переделать
     "S_GB_7_|p1-p2;2/p30/p17;4,p30-p4;3/k738,p4-l1;2/p5,p5-k740/p6,p6-tw/p7,p7-k731/p8;3,p8-k742/k733/p9;2,p9-k735/p10,p10-k737/p11;3,p11-k739/k744/p12;5,p12-k741/p13,p13-k743/k746/p14;7,p14-k748/p15;3,p15-k750/p16;2,p16-l3;2,p2-p3/e3;2/e4;2,p3-e1;2/e2;2,p17-k736/p18;2,p18-tm/p19;3,p19-k729/k734/p20;3,p20-k727/p21,p21-p22;3/k725/k732,p22-k723/k730/p23,p23-l2;2/p24,p24-p25,p25-p26,p26-k728/p27,p27-p29;3/p28;3,p29-k726,p28-k724",
     "S_GB_6_|p1-e1;2/e2;2/p2,p2-e3;2/e4;2/p3,p3-p4/p20;4,p4-k648/p5;3,p5-l1;2/p6;2,p6-k650/p7;2,p7-tw/p8,p8-k633/k652/p9;3,p9-p10;3/k635,p10-k637/k654/p11;3,p11-p12/k639/k656,p12-k658/p13;4,p13-k660/k641/p14;2,p14-p15;3/k643/k662,p15-p16;5/k645,p16-k647/k664/p17,p17-l3;2/p18,p18-p19;3,p19-l4;13,p20-k646/p21;2,p21-tm/p22;3,p22-p23;4/k631/k644,p23-k629/p24,p24-k627/k642/p25;3,p25-k640/p26,p26-l2;2/p27,p27-k638/p28,p28-p29,p29-k636/p30;3,p30-k632",
     "S_GA_7_|p1-p2;2/k722,p2-p3;2/k721,p3-k722/p4,p4-p5;2/k719,p5-p6/k720,p6-p7;3/k717,p7-p8/k715,p8-p9;3/k718,p9-p10/l1;2,p10-k716/p11;3,p11-p12/e1;2/e2;2,p12-k713/p13,p13-k714/p14;3,p14-k711/p15,p15-k712/p16,p16-e3;2/e4;2/p17;2/p17-p18/l2;2,p18-k712/p19,p19-k710/p20;2,p20-k709/p21,p21-k708/p22;3,p22-k707/p23;2,p23-k706/p24,p24-k705/p25,p25-k704/p26;3,p26-l3;2",
     "S_GV_3_|p1-p2/l1D,p2-p3,p3-b1/p4,p4-p5,p5-f1/p6,p6-l2D"]
+    #"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]
 
 add_to_nodes(add_graph)
 print(nodes)
@@ -357,13 +297,8 @@ pprint(init_graph, width=1000, depth=3)
 
 graph = Graph(nodes, init_graph)
 
-# start = input("Input number: ")
-# end = input("Output number: ")
+start = input("Input number: ")
+end = input("Output number: ")
 
-# print(graph.get_nodes())
-# graph.give_graph()
-# print(graph.get_outgoing_edges(start))
-# previous_nodes, shortest_path = dijkstra_algorithm(graph=graph, start_node=start)
-
-# print_result(previous_nodes, shortest_path, start_node=start, target_node=end)
-pprint(make_dictionar_of_points(sp_s, {}))
+return_shortest_path(start, end)
+dict_of_points_coordinates = make_dictionar_of_points(sp_s, {})
