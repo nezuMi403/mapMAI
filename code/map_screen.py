@@ -164,6 +164,7 @@ class MapScreen(Screen):
 
     def plus(self, instance):
         self._zoom(0.2)
+        self.test_route(instance)
 
     def minus(self, instance):
         self._zoom(-0.2)
@@ -190,4 +191,10 @@ class MapScreen(Screen):
     def test_route(self, instance):
         """Тестовый метод для отображения маршрута"""
         if self.name == 'guka' and self.cur_level == 2:
-            self.set_route(["SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211", "SGV_GUKA_3_k_309"])
+            self.set_route(["SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211"])
+        elif self.name == 'guka' and self.cur_level == 3:
+            self.set_route(["SGV_GUKA_3_k_309", "SGV_GUKA_3_k_310"])
+        elif self.name == 'gukv' and self.cur_level == 3:
+            self.set_route(["SGV_GUKV_3_k_301", "SGV_GUKV_3_k_302"])
+        elif self.name == 'outside' and self.cur_level == 0:
+            self.set_route(["S_Streshnevo_i_1", "S_Streshnevo_i_2"])
