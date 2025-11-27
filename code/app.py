@@ -12,6 +12,7 @@ from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
 from code.navigation_data import NAVIGATION_DATA
 from code.search_screen import SearchScreen
+from code.graph import Graph
 
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
@@ -113,14 +114,15 @@ class MenuScreen(Screen):
 
 class MainApp(App):
     def build(self):
+        self.graph = Graph()
         screen_manager = MainScreenManager()
 
         screens = [
             MenuScreen(name='menu'),
-            MapScreen(cur_build=ImagesPaths.GUKA, name='guka'),
+            MapScreen(self.graph, cur_build=ImagesPaths.GUKA, name='guka'),
             # MapScreen(cur_build=ImagesPaths.GUKB, name='gukb'),
-            MapScreen(cur_build=ImagesPaths.GUKV, name='gukv'),
-            MapScreen(cur_build=ImagesPaths.OUTSIDE, name='outside'),
+            MapScreen(self.graph, cur_build=ImagesPaths.GUKV, name='gukv'),
+            MapScreen(self.graph, cur_build=ImagesPaths.OUTSIDE, name='outside'),
 
             SearchScreen(name='search'),
         ]
