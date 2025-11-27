@@ -287,6 +287,3 @@ class Graph(object):
         return sp_result[1:]
 
     #"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]
-
-gr = Graph()
-print("!\n", gr.return_shortest_path("S_GV_3_p_1", "S_GV_3_f_1"))
