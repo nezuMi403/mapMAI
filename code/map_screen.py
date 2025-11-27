@@ -164,7 +164,6 @@ class MapScreen(Screen):
 
     def plus(self, instance):
         self._zoom(0.2)
-        self.test_route(instance)
 
     def minus(self, instance):
         self._zoom(-0.2)
