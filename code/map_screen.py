@@ -8,6 +8,7 @@ from kivy.graphics import Color, Rectangle
 
 from code.images_paths import ImagesPaths
 from code.route_renderer import RouteRenderer
+from code.graph import *
 
 
 class MapScreen(Screen):
@@ -19,7 +20,7 @@ class MapScreen(Screen):
         self.navigation_data = {}  # Все данные навигации
         self.connections = {}  # {уровень: [(id1, id2)]}
         self.route_calculator = None  # Ваш класс для расчета маршрута
-
+        self.graph = Graph()
         self._setup_ui()
 
     def on_enter(self):
@@ -39,8 +40,7 @@ class MapScreen(Screen):
                     self.scatter_plane.rotation = 0
 
                 start, end = start_point['name'], end_point['name']
-                route_nodes = [start, end]
-                # TODO: построение маршрута
+                route_nodes = self.graph.return_shortest_path(start, end)
                 self.set_route(route_nodes)
 
     def _setup_ui(self):
