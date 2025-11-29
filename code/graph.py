@@ -256,6 +256,9 @@ class Graph(object):
             list_toDo = s.strip().split("\n")
             prefix, points = list_toDo[0], list_toDo[1:]
             name_building = prefix[:len(prefix)-3].replace("G", "GUK_")
+            name_building = name_building.replace("S_GUK_A", "guka")
+            name_building = name_building.replace("S_GUK_B", "gukb")
+            name_building = name_building.replace("S_GUK_V", "gukv")
             name_floor = int(prefix[-2])
             if name_building not in sl.keys():
                 sl[name_building] = {}
@@ -276,6 +279,7 @@ class Graph(object):
                 # print(point_name, init_graph.keys())
                 for point_neightbor in self.init_graph[point_name].keys():
                     sl[name_building][name_floor]['connections'].append((point_name, point_neightbor))
+        print(*sl)
         return sl
 
     def return_shortest_path(self, input_point:str, output_point:str) -> list:
@@ -285,5 +289,23 @@ class Graph(object):
         previous_nodes, shortest_path = self.dijkstra_algorithm(start_node=input_point)
         sp_result = self.print_result(previous_nodes, shortest_path, start_node=input_point, target_node=output_point)
         return sp_result[1:]
+
+    def get_all_points(self):
+        all_points = []
+
+        for building, levels in self.dict_of_points_coordinates.items():
+            for level, data in levels.items():
+                if 'coordinates' in data:
+                    for point_name, coords in data['coordinates'].items():
+                        all_points.append({
+                            'name': point_name,
+                            'building': building,
+                            'level': level,
+                            'coordinates': coords
+                        })
+
+        # Сортируем точки по имени для удобного отображения
+        all_points.sort(key=lambda x: x['name'])
+        return all_points
 
     #"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]

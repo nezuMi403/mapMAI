@@ -117,7 +117,7 @@ class MainApp(App):
         self.graph = Graph()
         screen_manager = MainScreenManager()
         navigation_data = self.graph.dict_of_points_coordinates
-        
+
         screens = [
             MenuScreen(name='menu'),
             MapScreen(self.graph, cur_build=ImagesPaths.GUKA, name='guka'),
@@ -125,7 +125,7 @@ class MainApp(App):
             MapScreen(self.graph, cur_build=ImagesPaths.GUKV, name='gukv'),
             MapScreen(self.graph, cur_build=ImagesPaths.OUTSIDE, name='outside'),
 
-            SearchScreen(name='search'),
+            SearchScreen(self.graph, name='search'),
         ]
 
         for screen in screens:
