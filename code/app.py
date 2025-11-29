@@ -8,6 +8,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
 
+from code.graph import Graph
 from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
 from code.navigation_data import NAVIGATION_DATA
@@ -115,14 +116,16 @@ class MainApp(App):
     def build(self):
         screen_manager = MainScreenManager()
 
+        graph = Graph()
+
         screens = [
             MenuScreen(name='menu'),
-            MapScreen(cur_build=ImagesPaths.GUKA, name='guka'),
+            MapScreen(graph=graph, cur_build=ImagesPaths.GUKA, name='guka'),
             # MapScreen(cur_build=ImagesPaths.GUKB, name='gukb'),
-            MapScreen(cur_build=ImagesPaths.GUKV, name='gukv'),
-            MapScreen(cur_build=ImagesPaths.OUTSIDE, name='outside'),
+            MapScreen(graph=graph, cur_build=ImagesPaths.GUKV, name='gukv'),
+            MapScreen(graph=graph, cur_build=ImagesPaths.OUTSIDE, name='outside'),
 
-            SearchScreen(name='search'),
+            SearchScreen(graph=graph, name='search'),
         ]
 
         for screen in screens:

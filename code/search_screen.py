@@ -8,15 +8,18 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.graphics import Color, Rectangle
 
-from code.navigation_data import ALL_POINTS
+# from code.navigation_data import ALL_POINTS
 
 
 class SearchScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, graph, **kwargs):
         super().__init__(**kwargs)
         self.start_point = None
         self.end_point = None
         self._create_ui()
+
+        self.graph = graph
+        self.all_points = self.graph.get_all_points()
 
     def _create_ui(self):
         with self.canvas.before:
@@ -128,7 +131,7 @@ class SearchScreen(Screen):
         points_layout.bind(minimum_height=points_layout.setter('height'))
 
         # Добавляем кнопки для каждой точки
-        for point in ALL_POINTS:
+        for point in self.all_points:
             btn = Button(
                 text=f"{point['name']} ({point['building']}, этаж {point['level']})",
                 size_hint_y=None,

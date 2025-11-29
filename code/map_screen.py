@@ -11,7 +11,7 @@ from code.route_renderer import RouteRenderer
 
 
 class MapScreen(Screen):
-    def __init__(self, cur_build, **kwargs):
+    def __init__(self, graph, cur_build, **kwargs):
         super().__init__(**kwargs)
         self.cur_build = cur_build
         self.cur_level = min(list(cur_build.keys()))
@@ -19,6 +19,8 @@ class MapScreen(Screen):
         self.navigation_data = {}  # Все данные навигации
         self.connections = {}  # {уровень: [(id1, id2)]}
         self.route_calculator = None  # Ваш класс для расчета маршрута
+
+        self.graph = graph
 
         self._setup_ui()
 
@@ -39,7 +41,7 @@ class MapScreen(Screen):
                     self.scatter_plane.rotation = 0
 
                 start, end = start_point['name'], end_point['name']
-                route_nodes = [start, end]
+                route_nodes = self.graph.return_shortest_path(start, end)
                 # TODO: построение маршрута
                 self.set_route(route_nodes)
 
