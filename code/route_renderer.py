@@ -64,7 +64,7 @@ class RouteRenderer(Widget):
                     print(points)
 
             if points:
-                print("drawing line")
+                print("drawing line", points)
                 Line(
                     points=points,
                     #width=1.1,

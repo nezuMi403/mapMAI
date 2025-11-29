@@ -33,7 +33,7 @@ class Graph(object):
         self.init_params()
         self.add_to_nodes()
         self.init_graph = self.initialization_graph()
-        pprint(self.init_graph, width=1000, depth=3)
+        # pprint(self.init_graph, width=1000, depth=3)
         self.graph = self.construct_graph(self.nodes, self.init_graph)
         
         self.dict_of_points_coordinates = self.make_dictionar_of_points()
@@ -151,10 +151,10 @@ class Graph(object):
 
         path.append(start_node)
 
-        print("\nНайден следующий лучший маршрут с длиной {}.".format(shortest_path[target_node]))
-        print(" -> ".join(reversed(path)))
-        print(type(shortest_path[target_node]))
-        print(type(reversed(path)))
+        #print("\nНайден следующий лучший маршрут с длиной {}.".format(shortest_path[target_node]))
+        #print(" -> ".join(reversed(path)))
+        #print(type(shortest_path[target_node]))
+        #print(type(reversed(path)))
         return [shortest_path[target_node]] + list(reversed(path))
 
 
@@ -256,9 +256,11 @@ class Graph(object):
             list_toDo = s.strip().split("\n")
             prefix, points = list_toDo[0], list_toDo[1:]
             name_building = prefix[:len(prefix)-3].replace("G", "GUK_")
+
             name_building = name_building.replace("S_GUK_A", "guka")
             name_building = name_building.replace("S_GUK_B", "gukb")
             name_building = name_building.replace("S_GUK_V", "gukv")
+
             name_floor = int(prefix[-2])
             if name_building not in sl.keys():
                 sl[name_building] = {}
@@ -266,7 +268,7 @@ class Graph(object):
             if name_floor not in sl[name_building].keys():
                 sl[name_building][name_floor] = {'coordinates' : {}, 'connections':[]}
             
-            print(name_building)
+            # print(name_building)
             for point in points:
                 point = point.split(": ")
                 point_name = prefix + point[0]
@@ -279,7 +281,7 @@ class Graph(object):
                 # print(point_name, init_graph.keys())
                 for point_neightbor in self.init_graph[point_name].keys():
                     sl[name_building][name_floor]['connections'].append((point_name, point_neightbor))
-        print(*sl)
+        print(sl)
         return sl
 
     def return_shortest_path(self, input_point:str, output_point:str) -> list:
