@@ -149,16 +149,16 @@ class SearchScreen(Screen):
         popup_layout.add_widget(cancel_btn)
 
         # Создаем popup
-        popup = Popup(
+        self.popup_build = Popup(
             title='',
             content=popup_layout,
             size_hint=(0.9, 0.8),
             auto_dismiss=True
         )
 
-        cancel_btn.on_press = popup.dismiss
+        cancel_btn.on_press = self.popup_build.dismiss
 
-        popup.open()
+        self.popup_build.open()
 
     def _show_levels_list(self, building, is_start=True):
         """Показать список этажей для выбранного корпуса"""
@@ -193,20 +193,23 @@ class SearchScreen(Screen):
 
         # Кнопка назад (к выбору корпуса)
         back_btn = Button(text='Назад к выбору корпуса', size_hint_y=0.1)
-        back_btn.on_press = lambda: self._show_buildings_list(is_start)
+        #back_btn.on_press = lambda: self._show_buildings_list(is_start)
+
         popup_layout.add_widget(back_btn)
 
         # Создаем popup
-        popup = Popup(
+        self.popup_levels = Popup(
             title='',
             content=popup_layout,
             size_hint=(0.9, 0.8),
             auto_dismiss=True
         )
 
+        back_btn.on_press = self.popup_levels.dismiss
+
         # Закрываем предыдущий popup
-        self._close_all_popups()
-        popup.open()
+        # self._close_all_popups()
+        self.popup_levels.open()
 
     def _show_points_list(self, building, level, is_start=True):
         """Показать список точек для выбранного корпуса и этажа"""
@@ -242,26 +245,28 @@ class SearchScreen(Screen):
 
         # Кнопка назад (к выбору этажа)
         back_btn = Button(text='Назад к выбору этажа', size_hint_y=0.1)
-        back_btn.on_press = lambda: self._show_levels_list(building, is_start)
+        # back_btn.on_press = lambda: self._show_levels_list(building, is_start)
         popup_layout.add_widget(back_btn)
 
         # Создаем popup
-        popup = Popup(
+        self.popup_points = Popup(
             title='',
             content=popup_layout,
             size_hint=(0.9, 0.8),
             auto_dismiss=True
         )
 
+        back_btn.on_press = self.popup_points.dismiss
+
         # Закрываем предыдущий popup
-        self._close_all_popups()
-        popup.open()
+        # self._close_all_popups()
+        self.popup_points.open()
 
     def _close_all_popups(self):
         """Закрыть все открытые popup'ы"""
-        for child in self.children[:]:
-            if isinstance(child, Popup):
-                child.dismiss()
+        self.popup_points.dismiss()
+        self.popup_levels.dismiss()
+        self.popup_build.dismiss()
 
     def _select_point(self, point, is_start):
         """Выбрать точку и обновить интерфейс"""
