@@ -22,6 +22,9 @@ class MapScreen(Screen):
 
         self.graph = graph
 
+        self.route_renderer = RouteRenderer()
+        self.set_navigation_data(self.graph.dict_of_points_coordinates)
+
         self._setup_ui()
 
     def on_enter(self):
@@ -42,7 +45,7 @@ class MapScreen(Screen):
 
                 start, end = start_point['name'], end_point['name']
                 route_nodes = self.graph.return_shortest_path(start, end)
-                # TODO: построение маршрута
+                # route_nodes = [start, end]
                 self.set_route(route_nodes)
 
     def _setup_ui(self):
@@ -58,10 +61,6 @@ class MapScreen(Screen):
         self.scatter_plane = ScatterPlane(scale=1.5, scale_max=5, scale_min=1.5)
         self.img_map = Image(source=self.cur_build[self.cur_level], mipmap=True)
         self._update_image_position()
-
-        # Создаем renderer для маршрутов и добавляем его НА scatter_plane
-        self.route_renderer = RouteRenderer()
-        self.route_renderer.set_navigation_data(self.navigation_data)
 
         # Добавляем сначала изображение, потом маршрут поверх него
         self.scatter_plane.add_widget(self.img_map)
@@ -132,11 +131,11 @@ class MapScreen(Screen):
         """Установить все данные навигации"""
         self.navigation_data = navigation_data
         self.route_renderer.set_navigation_data(navigation_data)
-        # Устанавливаем текущее положение
         self.route_renderer.set_current_location(self.name, self.cur_level)
 
     def set_route(self, route_nodes):
         """Установить маршрут"""
+        print('Отрисовывается маршрут:', route_nodes)
         self.route_renderer.set_route(route_nodes)
 
     def clear_route(self):
@@ -189,26 +188,3 @@ class MapScreen(Screen):
     def go_to_outsude(self, instance):
         self.manager.transition = SlideTransition(direction='right', duration=0.2)
         self.manager.current = 'outside'
-
-    def test_route(self, instance):
-        """Тестовый метод для отображения маршрута"""
-        if self.name == 'gukv' and self.cur_level == 3:
-            self.set_route([
-                "S_GV_3_l_1",
-                "S_GV_3_p_1",
-                "S_GV_3_p_2",
-                "S_GV_3_p_3",
-                "S_GV_3_p_4",
-                "S_GV_3_p_5",
-                "S_GV_3_p_6",
-                'S_GV_3_f_1'
-            ])
-        pass
-        """if self.name == 'guka' and self.cur_level == 2:
-            self.set_route(["SGV_GUKA_2_k_209", "SGV_GUKA_2_k_210", "SGV_GUKA_2_k_211"])
-        elif self.name == 'guka' and self.cur_level == 3:
-            self.set_route(["SGV_GUKA_3_k_309", "SGV_GUKA_3_k_310"])
-        elif self.name == 'gukv' and self.cur_level == 3:
-            self.set_route(["SGV_GUKV_3_k_301", "SGV_GUKV_3_k_302"])
-        elif self.name == 'outside' and self.cur_level == 0:
-            self.set_route(["S_Streshnevo_i_1", "S_Streshnevo_i_2"])"""

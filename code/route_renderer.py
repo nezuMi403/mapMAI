@@ -68,6 +68,12 @@ class RouteRenderer(Widget):
 
                     points.extend([x1, y1, x2, y2])
                     #points2.extend([x1+0.3, y1, x2+0.2, y2])
+                else:
+                    if node1 not in coordinates:
+                        print(f"ОШИБКА: точка {node1} не найдена")
+                    if node2 not in coordinates:
+                        print(f"ОШИБКА: точка {node2} не найдена")
+                    print(self.navigation_data)
 
 
             if points:
