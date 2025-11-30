@@ -8,8 +8,6 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.graphics import Color, Rectangle
 
-# from code.navigation_data import ALL_POINTS
-
 
 class SearchScreen(Screen):
     def __init__(self, graph, **kwargs):
@@ -47,10 +45,10 @@ class SearchScreen(Screen):
             text='Не выбрано',
             readonly=True,
             size_hint_y=0.6,
-            #background_color=(r/255.0, g/255.0, b/255.0, 1)
+            # background_color=(r/255.0, g/255.0, b/255.0, 1)
         )
         start_btn = Button(text='Выбрать старт', on_press=self.show_points_list_start,
-                           background_color=(r/255.0, g/255.0, b/255.0, 1),
+                           background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
                            background_normal='',
                            background_down=''
                            )
@@ -66,10 +64,10 @@ class SearchScreen(Screen):
             text='Не выбрано',
             readonly=True,
             size_hint_y=0.6,
-            #background_color=(r/255.0, g/255.0, b/255.0, 1)
+            # background_color=(r/255.0, g/255.0, b/255.0, 1)
         )
         end_btn = Button(text='Выбрать конец', on_press=self.show_points_list_end,
-                         background_color=(r/255.0, g/255.0, b/255.0, 1),
+                         background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
                          background_normal='',
                          background_down=''
                          )
@@ -85,7 +83,7 @@ class SearchScreen(Screen):
             text='Построить маршрут',
             on_press=self.build_route,
             size_hint_y=0.1,
-            background_color=(r/255.0, g/255.0, b/255.0, 1),
+            background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
             background_normal='',
             background_down=''
         )
@@ -96,7 +94,7 @@ class SearchScreen(Screen):
             text='Отмена',
             on_press=self.go_back,
             size_hint_y=0.05,
-            background_color=(r/255.0, g/255.0, b/255.0, 1),
+            background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
             background_normal='',
             background_down=''
         )
@@ -110,37 +108,40 @@ class SearchScreen(Screen):
 
     def show_points_list_start(self, instance):
         """Показать список точек для выбора стартовой точки"""
-        self._show_points_list(is_start=True)
+        self._show_buildings_list(is_start=True)
 
     def show_points_list_end(self, instance):
         """Показать список точек для выбора конечной точки"""
-        self._show_points_list(is_start=False)
+        self._show_buildings_list(is_start=False)
 
-    def _show_points_list(self, is_start=True):
-        """Показать всплывающее окно со списком точек"""
+    def _show_buildings_list(self, is_start=True):
+        """Показать список корпусов"""
+        # Получаем уникальные корпуса
+        buildings = sorted(set(point['building'] for point in self.all_points))
+
         # Создаем layout для popup
         popup_layout = BoxLayout(orientation='vertical', spacing=10)
 
         # Заголовок
-        title = Label(text='Выберите точку:', size_hint_y=0.1)
+        title = Label(text='Выберите корпус:', size_hint_y=0.1)
         popup_layout.add_widget(title)
 
-        # ScrollView со списком точек
+        # ScrollView со списком корпусов
         scroll = ScrollView()
-        points_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
-        points_layout.bind(minimum_height=points_layout.setter('height'))
+        buildings_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
+        buildings_layout.bind(minimum_height=buildings_layout.setter('height'))
 
-        # Добавляем кнопки для каждой точки
-        for point in self.all_points:
+        # Добавляем кнопки для каждого корпуса
+        for building in buildings:
             btn = Button(
-                text=f"{point['name']} ({point['building']}, этаж {point['level']})",
+                text=str(building),
                 size_hint_y=None,
                 height=40,
-                on_press=lambda instance, p=point, start=is_start: self._select_point(p, start)
+                on_press=lambda instance, b=building, start=is_start: self._show_levels_list(b, start)
             )
-            points_layout.add_widget(btn)
+            buildings_layout.add_widget(btn)
 
-        scroll.add_widget(points_layout)
+        scroll.add_widget(buildings_layout)
         popup_layout.add_widget(scroll)
 
         # Кнопка отмены
@@ -159,6 +160,109 @@ class SearchScreen(Screen):
 
         popup.open()
 
+    def _show_levels_list(self, building, is_start=True):
+        """Показать список этажей для выбранного корпуса"""
+        # Получаем уникальные этажи для выбранного корпуса
+        levels = sorted(set(point['level'] for point in self.all_points
+                            if point['building'] == building))
+
+        # Создаем layout для popup
+        popup_layout = BoxLayout(orientation='vertical', spacing=10)
+
+        # Заголовок
+        title = Label(text=f'Выберите этаж (корпус {building}):', size_hint_y=0.1)
+        popup_layout.add_widget(title)
+
+        # ScrollView со списком этажей
+        scroll = ScrollView()
+        levels_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
+        levels_layout.bind(minimum_height=levels_layout.setter('height'))
+
+        # Добавляем кнопки для каждого этажа
+        for level in levels:
+            btn = Button(
+                text=f'Этаж {level}',
+                size_hint_y=None,
+                height=40,
+                on_press=lambda instance, b=building, l=level, start=is_start: self._show_points_list(b, l, start)
+            )
+            levels_layout.add_widget(btn)
+
+        scroll.add_widget(levels_layout)
+        popup_layout.add_widget(scroll)
+
+        # Кнопка назад (к выбору корпуса)
+        back_btn = Button(text='Назад к выбору корпуса', size_hint_y=0.1)
+        back_btn.on_press = lambda: self._show_buildings_list(is_start)
+        popup_layout.add_widget(back_btn)
+
+        # Создаем popup
+        popup = Popup(
+            title='',
+            content=popup_layout,
+            size_hint=(0.9, 0.8),
+            auto_dismiss=True
+        )
+
+        # Закрываем предыдущий popup
+        self._close_all_popups()
+        popup.open()
+
+    def _show_points_list(self, building, level, is_start=True):
+        """Показать список точек для выбранного корпуса и этажа"""
+        # Фильтруем точки по корпусу и этажу
+        filtered_points = [point for point in self.all_points
+                           if point['building'] == building and point['level'] == level]
+
+        # Создаем layout для popup
+        popup_layout = BoxLayout(orientation='vertical', spacing=10)
+
+        # Заголовок
+        title = Label(text=f'Выберите точку (корпус {building}, этаж {level}):',
+                      size_hint_y=0.1)
+        popup_layout.add_widget(title)
+
+        # ScrollView со списком точек
+        scroll = ScrollView()
+        points_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
+        points_layout.bind(minimum_height=points_layout.setter('height'))
+
+        # Добавляем кнопки для каждой точки
+        for point in filtered_points:
+            btn = Button(
+                text=point['name'],
+                size_hint_y=None,
+                height=40,
+                on_press=lambda instance, p=point, start=is_start: self._select_point(p, start)
+            )
+            points_layout.add_widget(btn)
+
+        scroll.add_widget(points_layout)
+        popup_layout.add_widget(scroll)
+
+        # Кнопка назад (к выбору этажа)
+        back_btn = Button(text='Назад к выбору этажа', size_hint_y=0.1)
+        back_btn.on_press = lambda: self._show_levels_list(building, is_start)
+        popup_layout.add_widget(back_btn)
+
+        # Создаем popup
+        popup = Popup(
+            title='',
+            content=popup_layout,
+            size_hint=(0.9, 0.8),
+            auto_dismiss=True
+        )
+
+        # Закрываем предыдущий popup
+        self._close_all_popups()
+        popup.open()
+
+    def _close_all_popups(self):
+        """Закрыть все открытые popup'ы"""
+        for child in self.children[:]:
+            if isinstance(child, Popup):
+                child.dismiss()
+
     def _select_point(self, point, is_start):
         """Выбрать точку и обновить интерфейс"""
         if is_start:
@@ -169,9 +273,7 @@ class SearchScreen(Screen):
             self.end_input.text = f"{point['name']} ({point['building']}, этаж {point['level']})"
 
         # Закрываем все открытые popup
-        for child in self.children[:]:
-            if isinstance(child, Popup):
-                child.dismiss()
+        self._close_all_popups()
 
     def build_route(self, instance):
         """Построить маршрут и перейти на карту"""
