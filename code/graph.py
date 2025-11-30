@@ -74,9 +74,10 @@ class Graph(object):
 
     def give_graph(self):
         for i in sorted(self.graph.keys(), key=lambda x: x):
-            print(f"\n{i}:")
+            # print(f"\n{i}:")
             for j in sorted(self.graph[i].keys(), key=lambda x: x):
-                print(f"|---{j}\t{self.graph[i][j]}")
+                # print(f"|---{j}\t{self.graph[i][j]}")
+                pass
 
     def construct_graph(self, nodes, init_graph):
         graph = {}
@@ -111,7 +112,7 @@ class Graph(object):
 
     def dijkstra_algorithm(self, start_node: str):
         unvisited_nodes = list(self.get_nodes())
-        #print(unvisited_nodes)
+        # print(unvisited_nodes)
         shortest_path = {}
         previous_nodes = {}  # для сохранения пути
 
@@ -138,7 +139,7 @@ class Graph(object):
                     previous_nodes[neighbor] = current_min_node
 
             unvisited_nodes.remove(current_min_node)
-        #print(previous_nodes)
+        # print(previous_nodes)
         return previous_nodes, shortest_path
 
 
@@ -156,7 +157,7 @@ class Graph(object):
         #print(" -> ".join(reversed(path)))
         #print(type(shortest_path[target_node]))
         #print(type(reversed(path)))
-        print([shortest_path[target_node]] + list(reversed(path)))
+        #print([shortest_path[target_node]] + list(reversed(path)))
         return [shortest_path[target_node]] + list(reversed(path))
 
 
@@ -254,8 +255,8 @@ class Graph(object):
         '''Add coords of points to the dictionary'''
 
         sl = {}
-        print("sp_s:")
-        print(self.sp_s[0])
+        # print("sp_s:")
+        # print(self.sp_s[0])
         for s in self.sp_s:
             list_toDo = s.strip().split("\n")
             prefix, points = list_toDo[0], list_toDo[1:]
@@ -265,29 +266,29 @@ class Graph(object):
             name_building = name_building.replace("S_GUK_B", "gukb")
             name_building = name_building.replace("S_GUK_V", "gukv")
             name_floor = int(prefix[-2])
-            print(name_floor, prefix)
+            # print(name_floor, prefix)
             if name_building not in sl.keys():
                 sl[name_building] = {}
 
             if name_floor not in sl[name_building].keys():
                 sl[name_building][name_floor] = {'coordinates' : {}, 'connections':[]}
-            print(sl, points)
+            # print(sl, points)
             # print(name_building)
             for point in points:
                 point = point.split(": ")
                 point_name = prefix + point[0]
                 # print(point[1][1:][:len(point[1]) - 1].split(", "))
                 point_coords = tuple(map(int, point[1][1:].split(")")[0][:len(point[1]) - 1].split(", ")))
-                print(point_coords)
+                # print(point_coords)
                 sl[name_building][name_floor]['coordinates'][point_name] = point_coords
-            print("points: ", points)
+            # print("points: ", points)
             for point in points:
                 point_name = prefix + point.split(": ")[0]
-                print(point_name)
+                # print(point_name)
                 for point_neightbor in self.init_graph[point_name].keys():
                     sl[name_building][name_floor]['connections'].append((point_name, point_neightbor))
-        print("SL:")
-        pprint(sl)
+        # print("SL:")
+        # pprint(sl)
         return sl
 
     def return_shortest_path(self, input_point:str, output_point:str) -> list:
@@ -300,8 +301,8 @@ class Graph(object):
 
     def get_all_points(self):
         all_points = []
-        print("!!! dict_of_points_coords")
-        pprint(self.dict_of_points_coordinates)
+        # print("!!! dict_of_points_coords")
+        # pprint(self.dict_of_points_coordinates)
         for building, levels in self.dict_of_points_coordinates.items():
             for level, data in levels.items():
                 if 'coordinates' in data:

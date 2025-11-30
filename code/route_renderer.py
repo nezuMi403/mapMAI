@@ -25,6 +25,7 @@ class RouteRenderer(Widget):
 
     def set_route(self, route_nodes):
         """Установить текущий маршрут для отображения"""
+        # print('Отрисовывается маршрут:', route_nodes)
         self.current_route = route_nodes
         self.draw_route()
 
@@ -73,7 +74,7 @@ class RouteRenderer(Widget):
                         print(f"ОШИБКА: точка {node1} не найдена")
                     if node2 not in coordinates:
                         print(f"ОШИБКА: точка {node2} не найдена")
-                    print(self.navigation_data)
+                    print("navigation_data:", self.navigation_data)
 
 
             if points:

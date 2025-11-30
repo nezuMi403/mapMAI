@@ -135,7 +135,6 @@ class MapScreen(Screen):
 
     def set_route(self, route_nodes):
         """Установить маршрут"""
-        print('Отрисовывается маршрут:', route_nodes)
         self.route_renderer.set_route(route_nodes)
 
     def clear_route(self):
