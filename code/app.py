@@ -11,7 +11,6 @@ from kivy.graphics import Color, Rectangle
 from code.graph import Graph
 from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
-from code.navigation_data import NAVIGATION_DATA
 from code.search_screen import SearchScreen
 
 Config.set('graphics', 'resizable', 0)
@@ -129,9 +128,6 @@ class MainApp(App):
         ]
 
         for screen in screens:
-            # Передаем данные навигации каждому экрану
-            if hasattr(screen, 'set_navigation_data'):
-                screen.set_navigation_data(NAVIGATION_DATA)
             screen_manager.add_widget(screen)
 
         screen_manager.current = 'menu'
