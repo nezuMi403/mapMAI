@@ -105,5 +105,5 @@ class RouteRenderer(Widget):
                     x, y = coordinates[node]
                     y = 10000 - y
                     x, y = x * self.k, y * self.k + self.d
-                    r = 4
+                    r = 2
                     Ellipse(pos=(x - r//2, y - r//2), size=(r, r))
