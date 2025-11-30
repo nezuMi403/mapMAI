@@ -1,7 +1,7 @@
 # route_renderer.py
 from kivy.graphics import Color, Line, Ellipse
 from kivy.uix.widget import Widget
-
+from pprint import pprint
 
 class RouteRenderer(Widget):
     def __init__(self, **kwargs):
@@ -70,11 +70,13 @@ class RouteRenderer(Widget):
                     points.extend([x1, y1, x2, y2])
                     #points2.extend([x1+0.3, y1, x2+0.2, y2])
                 else:
+                    print(coordinates)
                     if node1 not in coordinates:
                         print(f"ОШИБКА: точка {node1} не найдена")
                     if node2 not in coordinates:
                         print(f"ОШИБКА: точка {node2} не найдена")
-                    print("navigation_data:", self.navigation_data)
+                    #print("navigation_data:")
+                    #pprint(self.navigation_data)
 
 
             if points:
