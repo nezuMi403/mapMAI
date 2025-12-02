@@ -12,6 +12,7 @@ from code.graph import Graph
 from code.images_paths import ImagesPaths
 from code.map_screen import MapScreen
 from code.search_screen import SearchScreen
+from code.point_screen import PointScreen
 
 Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 360)
@@ -26,7 +27,8 @@ class MainScreenManager(ScreenManager):
             #Тут хранятся глобальные переменные, доступные по всех экранах
             'cur_build': None,
             'start_point': None,
-            'end_point': None
+            'end_point': None,
+            'point': None
         }
 
 
@@ -125,6 +127,7 @@ class MainApp(App):
             MapScreen(graph=graph, cur_build=ImagesPaths.OUTSIDE, name='outside'),
 
             SearchScreen(graph=graph, name='search'),
+            PointScreen(graph=graph, name='point'),
         ]
 
         for screen in screens:

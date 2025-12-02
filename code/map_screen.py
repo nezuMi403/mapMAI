@@ -33,6 +33,7 @@ class MapScreen(Screen):
         if hasattr(self.manager, 'params'):
             start_point = self.manager.params.get('start_point')
             end_point = self.manager.params.get('end_point')
+            point = self.manager.params.get('point')
 
             if start_point and end_point and start_point['building'] == self.name:
                 # Устанавливаем нужный этаж
@@ -47,6 +48,17 @@ class MapScreen(Screen):
                 route_nodes = self.graph.return_shortest_path(start, end)
                 # route_nodes = [start, end]
                 self.set_route(route_nodes)
+
+            elif point and point['building'] == self.name:
+                if point['level'] != self.cur_level and point['level'] in self.cur_build:
+                    self.cur_level = point['level']
+                    self.img_map.source = self.cur_build[self.cur_level]
+                    self.scatter_plane.scale = 1.5
+                    self.scatter_plane.pos = (0, 0)
+                    self.scatter_plane.rotation = 0
+                point_name = point['name']
+                self.set_point(point_name)
+
 
     def _setup_ui(self):
         # Создаем белый фон один раз
@@ -87,6 +99,7 @@ class MapScreen(Screen):
             ('menu', (360 - 320, 640 - 40), self.go_to_menu_screen),
             ('back', (360 - 270, 640 - 40), self.back),
             ('search', (320, 600), self.search),
+            ('point', (320-50, 600), self.point),
         ]
 
         for img_type, pos, callback in controls_data:
@@ -137,6 +150,10 @@ class MapScreen(Screen):
         """Установить маршрут"""
         self.route_renderer.set_route(route_nodes)
 
+    def set_point(self, point):
+        """Установить точку для поиска"""
+        self.route_renderer.set_point(point)
+
     def clear_route(self):
         """Очистить текущий маршрут"""
         self.route_renderer.set_route([])
@@ -178,6 +195,10 @@ class MapScreen(Screen):
         """Переход на экран поиска"""
         self.manager.transition = SlideTransition(direction='left')
         self.manager.current = 'search'
+
+    def point(self, instance):
+        self.manager.transition = SlideTransition(direction='left')
+        self.manager.current = 'point'
 
     def go_to_menu_screen(self, instance):
         self.manager.transition = SlideTransition(direction='right', duration=0.2)

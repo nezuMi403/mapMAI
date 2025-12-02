@@ -10,6 +10,7 @@ class RouteRenderer(Widget):
         self.current_level = None
         self.navigation_data = {}  # {building: {level: {coordinates: {}, connections: []}}}
         self.current_route = []
+        self.current_point = None
         self.k = 0.036
         self.d = 280//2
 
@@ -28,6 +29,12 @@ class RouteRenderer(Widget):
         # print('Отрисовывается маршрут:', route_nodes)
         self.current_route = route_nodes
         self.draw_route()
+
+    def set_point(self, point):
+        """Установить текущую точку для отображения"""
+        print('Отрисовывается точка:', point)
+        self.current_point = point
+        self.draw_point()
 
     def draw_route(self):
         """Отрисовать маршрут на canvas"""
@@ -101,3 +108,35 @@ class RouteRenderer(Widget):
                     x, y = x * self.k, y * self.k + self.d
                     r = 4
                     Ellipse(pos=(x - r//2, y - r//2), size=(r, r))
+    def draw_point(self):
+        """Отрисовать точку на canvas"""
+        self.canvas.clear()
+
+        if not self.current_point or not self.current_building or not self.current_level:
+            return
+
+        # Получаем данные для текущего здания и этажа
+        building_data = self.navigation_data.get(self.current_building, {})
+        level_data = building_data.get(self.current_level, {})
+        coordinates = level_data.get('coordinates', {})
+
+        if not coordinates:
+            return
+
+        # Рисуем линии маршрута
+        with self.canvas:
+            node = None
+            if self.current_point in coordinates:
+                x, y = coordinates[self.current_point]
+
+                y = 10000 - y
+                x = x * self.k
+                y = y * self.k + self.d
+                node = [x, y]
+
+            if node:
+                # Рисуем точки маршрута
+                Color(0, 0, 1, 0.6)
+                x, y = node
+                r = 10
+                Ellipse(pos=(x - r // 2, y - r // 2), size=(r, r))

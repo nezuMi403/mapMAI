@@ -1,4 +1,4 @@
-# search_screen.py
+# point_screen.py
 from kivy.uix.screenmanager import Screen, SlideTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -9,11 +9,10 @@ from kivy.uix.popup import Popup
 from kivy.graphics import Color, Rectangle
 
 
-class SearchScreen(Screen):
+class PointScreen(Screen):
     def __init__(self, graph, **kwargs):
         super().__init__(**kwargs)
-        self.start_point = None
-        self.end_point = None
+        self.point = None
         self._create_ui()
 
         self.graph = graph
@@ -30,7 +29,7 @@ class SearchScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
 
         # Заголовок
-        title = Label(text='Построение маршрута', font_size='24sp', size_hint_y=0.1,
+        title = Label(text='Поиск', font_size='24sp', size_hint_y=0.1,
                       color=(0, 0, 0, 1))
         layout.add_widget(title)
 
@@ -39,50 +38,33 @@ class SearchScreen(Screen):
 
         # Стартовая точка
         start_layout = BoxLayout(orientation='vertical', spacing=10)
-        start_layout.add_widget(Label(text='Стартовая точка:', size_hint_y=0.3,
+        start_layout.add_widget(Label(text='Какую точку найти:', size_hint_y=0.3,
                                       color=(0, 0, 0, 1)))
-        self.start_input = TextInput(
+        self.input = TextInput(
             text='Не выбрано',
             readonly=True,
-            size_hint_y=0.6,
+            size_hint_y=0.5,
             # background_color=(r/255.0, g/255.0, b/255.0, 1)
         )
-        start_btn = Button(text='Выбрать начало', on_press=self.show_points_list_start,
+        start_btn = Button(text='Выбрать точку', on_press=self.show_points_list_start,
                            background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
                            background_normal='',
                            background_down='',
                            font_size='20sp'
                            )
-        start_layout.add_widget(self.start_input)
+        start_layout.add_widget(self.input)
         start_layout.add_widget(start_btn)
         points_layout.add_widget(start_layout)
 
-        # Конечная точка
-        end_layout = BoxLayout(orientation='vertical', spacing=10)
-        end_layout.add_widget(Label(text='Конечная точка:', size_hint_y=0.3,
-                                    color=(0, 0, 0, 1)))
-        self.end_input = TextInput(
-            text='Не выбрано',
-            readonly=True,
-            size_hint_y=0.6,
-            # background_color=(r/255.0, g/255.0, b/255.0, 1)
-        )
-        end_btn = Button(text='Выбрать конец', on_press=self.show_points_list_end,
-                         background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
-                         background_normal='',
-                         background_down='',
-                         font_size='20sp'
-                         )
-        end_layout.add_widget(self.end_input)
-        end_layout.add_widget(end_btn)
-        points_layout.add_widget(end_layout)
+
         layout.add_widget(points_layout)
 
-        txg = Label(text='', font_size='12sp', size_hint_y=0.1)
+        txg = Label(text='', font_size='12sp', size_hint_y=0.4)
         layout.add_widget(txg)
+
         # Кнопка построения маршрута
         build_btn = Button(
-            text='Построить маршрут',
+            text='Показать',
             on_press=self.build_route,
             size_hint_y=0.1,
             background_color=(r / 255.0, g / 255.0, b / 255.0, 1),
@@ -275,27 +257,24 @@ class SearchScreen(Screen):
     def _select_point(self, point, is_start):
         """Выбрать точку и обновить интерфейс"""
         if is_start:
-            self.start_point = point
-            self.start_input.text = f"{point['name']} ({point['building']}, этаж {point['level']})"
-        else:
-            self.end_point = point
-            self.end_input.text = f"{point['name']} ({point['building']}, этаж {point['level']})"
+            self.point = point
+            self.input.text = f"{point['name']} ({point['building']}, этаж {point['level']})"
+
 
         # Закрываем все открытые popup
         self._close_all_popups()
 
     def build_route(self, instance):
         """Построить маршрут и перейти на карту"""
-        if not self.start_point or not self.end_point:
-            self._show_error("Выберите стартовую и конечную точки")
+        if not self.point:
+            self._show_error("Выберите точку")
             return
 
         # Сохраняем точки в глобальные параметры
-        self.manager.params['start_point'] = self.start_point
-        self.manager.params['end_point'] = self.end_point
+        self.manager.params['point'] = self.point
 
         # Определяем, на какой экран карты переходить
-        target_screen = self.start_point['building']
+        target_screen = self.point['building']
 
         # Переходим на экран карты
         self.manager.transition = SlideTransition(direction='left')
@@ -319,7 +298,5 @@ class SearchScreen(Screen):
     def on_enter(self):
         """Вызывается при входе на экран"""
         # Сбрасываем выбранные точки при каждом входе
-        self.start_point = None
-        self.end_point = None
-        self.start_input.text = 'Не выбрано'
-        self.end_input.text = 'Не выбрано'
+        self.point = None
+        self.input.text = 'Не выбрано'
