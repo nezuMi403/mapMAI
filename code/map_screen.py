@@ -45,7 +45,7 @@ class MapScreen(Screen):
                 # route_nodes = [start, end]
                 self.set_route(route_nodes)
 
-            elif point and point['building'] == self.name:
+            if point and point['building'] == self.name:
                 if point['level'] != self.cur_level and point['level'] in self.cur_build:
                     self.cur_level = point['level']
                     self.img_map.source = self.cur_build[self.cur_level]

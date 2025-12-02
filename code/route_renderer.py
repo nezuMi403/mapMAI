@@ -28,12 +28,14 @@ class RouteRenderer(Widget):
         """Установить текущий маршрут для отображения"""
         # print('Отрисовывается маршрут:', route_nodes)
         self.current_route = route_nodes
+        self.current_point = None
         self.draw_route()
 
     def set_point(self, point):
         """Установить текущую точку для отображения"""
         print('Отрисовывается точка:', point)
         self.current_point = point
+        self.current_route = []
         self.draw_point()
 
     def draw_route(self):
