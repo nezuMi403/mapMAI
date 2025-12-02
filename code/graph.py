@@ -457,7 +457,7 @@ h_1r: (4187, 5864)"""
 
         # Сортируем точки по имени для удобного отображения
         all_points.sort(key=lambda x: x['name'])
-        all_points = [i for i in all_points if "_p_" not in i]
+        all_points = [i for i in all_points if "_p_" not in i['name']]
         return all_points
 
     #"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]
