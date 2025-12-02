@@ -38,11 +38,7 @@ class MapScreen(Screen):
             if start_point and end_point and start_point['building'] == self.name:
                 # Устанавливаем нужный этаж
                 if start_point['level'] != self.cur_level and start_point['level'] in self.cur_build:
-                    self.cur_level = start_point['level']
-                    self.img_map.source = self.cur_build[self.cur_level]
-                    self.scatter_plane.scale = 1.5
-                    self.scatter_plane.pos = (0, 0)
-                    self.scatter_plane.rotation = 0
+                    self._set_level(start_point['level'])
 
                 start, end = start_point['name'], end_point['name']
                 route_nodes = self.graph.return_shortest_path(start, end)
@@ -125,20 +121,23 @@ class MapScreen(Screen):
         # Убираем route_renderer отсюда, т.к. он теперь на scatter_plane
         self.add_widget(self.main_wig)
 
+    def _set_level(self, level):
+        self.cur_level = level
+        self.img_map.source = self.cur_build[self.cur_level]
+        self.scatter_plane.scale = 1.5
+        self.scatter_plane.pos = (0, 0)
+        self.scatter_plane.rotation = 0
+
+        # Обновляем текущее положение в renderer
+        self.route_renderer.set_current_location(self.name, self.cur_level)
+
     def _change_level(self, direction):
         levels = sorted(self.cur_build.keys())
         current_index = levels.index(self.cur_level)
 
         new_index = current_index + direction
         if 0 <= new_index < len(levels):
-            self.cur_level = levels[new_index]
-            self.img_map.source = self.cur_build[self.cur_level]
-            self.scatter_plane.scale = 1.5
-            self.scatter_plane.pos = (0, 0)
-            self.scatter_plane.rotation = 0
-
-            # Обновляем текущее положение в renderer
-            self.route_renderer.set_current_location(self.name, self.cur_level)
+            self._set_level(levels[new_index])
 
     def set_navigation_data(self, navigation_data):
         """Установить все данные навигации"""
