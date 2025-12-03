@@ -36,13 +36,13 @@ class Graph(object):
         self.graph = self.construct_graph(self.nodes, self.init_graph)
 
         self.dict_of_points_coordinates = self.make_dictionar_of_points()
-        pprint(self.dict_of_points_coordinates)
+        pprint(self.init_graph)
 
     def init_params(self):
         '''inicializating all constants for graph'''
         self.init_graph_connections = [
             "S_GA_2_|p1-p2/k218,p2-p3/k213,p3-p4/k216,p4-p5/k211,p5-p6/k214,p6-p7/k209,p7-p8/k212,p8-k207/p36,p36-t1/p9,p9-l1/p28,p28-p35/p29,p35-k200V/p34,p34-p33,p33-p37/p39/p32,p37-l4U,p32-p31,p31-k200/p30,p30-p29/p11,p11-l2/p38,p38-t2/p12,p12-k210/p13,p13-k205/p14,p14-k208/p15,p15-k203/p16,p16-p17/k206,p17-k204/p18,p18-k201/p19,p19-l3/p20,p20-k202,p29-p21,p21-p22/e3/e4,p22-p23/e1/e2",
-            "S_GA_3_|p1-k10/p2,p2-k12A/p3,p3-p4/k9,p4-p5/k12,p5-k8/p6,p6-k12B/p7,p7-k7/p8,p8-k11/p9,p9-k6/p36,p36-p10/t1,p10-l1/p11,p11-p37/h1l,p37-p17/p12,p17-p18/p38/l4,p38-p16/p15,p18-p13/p14/p19,p13-p12,p12-e3,p14-p15,p15-e4,p19-e1/e2/p20,p16-h1r/p21,p21-l2/p39,p39-t2/p22,p22-k2/p23,p23-k14/k1/p25,p25-p26/k3,p26-p27/k4,p27-k13/p28,p28-k5/p29,p29-b15/p30,p30-l3/p31,p31-p32/p33,p33-p35,p35-a300,p32-p34,p34-a300",
+            "S_GA_3_|p1-k10/p2,p2-k12A/p3,p3-p4/k9,p4-p5/k12,p5-k8/p6,p6-k12B/p7,p7-k7/p8,p8-k11/p9,p9-k6/p36,p36-p10/t1,p10-l1/p11,p11-p37/h1l,p37-p17/p12,p17-p18/p38/l4,p38-p16/p15,p18-p13/p14/p19,p13-p12,p14-p15,p19-p20,p16-h1r/p21,p21-l2/p39,p39-t2/p22,p22-k2/p23,p23-k14/k1/p25,p25-p26/k3,p26-p27/k4,p27-k13/p28,p28-k5/p29,p29-b15/p30,p30-l3/p31,p31-p32/p33,p33-p35,p35-a300,p32-p34,p34-a300",
             "S_GB_7_|p1-p2;2/p30/p17;4,p30-p4;3/k738,p4-l1;2/p5,p5-k740/p6,p6-tw/p7,p7-k731/p8;3,p8-k742/k733/p9;2,p9-k735/p10,p10-k737/p11;3,p11-k739/k744/p12;5,p12-k741/p13,p13-k743/k746/p14;7,p14-k748/p15;3,p15-k750/p16;2,p16-l3;2,p2-p3/e3;2/e4;2,p3-e1;2/e2;2,p17-k736/p18;2,p18-tm/p19;3,p19-k729/k734/p20;3,p20-k727/p21,p21-p22;3/k725/k732,p22-k723/k730/p23,p23-l2;2/p24,p24-p25,p25-p26,p26-k728/p27,p27-p29;3/p28;3,p29-k726,p28-k724",
             "S_GB_6_|p1-e1;2/e2;2/p2,p2-e3;2/e4;2/p3,p3-p4/p20;4,p4-k648/p5;3,p5-l1;2/p6;2,p6-k650/p7;2,p7-tw/p8,p8-k633/k652/p9;3,p9-p10;3/k635,p10-k637/k654/p11;3,p11-p12/k639/k656,p12-k658/p13;4,p13-k660/k641/p14;2,p14-p15;3/k643/k662,p15-p16;5/k645,p16-k647/k664/p17,p17-l3;2/p18,p18-p19;3,p19-l4;13,p20-k646/p21;2,p21-tm/p22;3,p22-p23;4/k631/k644,p23-k629/p24,p24-k627/k642/p25;3,p25-k640/p26,p26-l2;2/p27,p27-k638/p28,p28-p29,p29-k636/p30;3,p30-k632",
             "S_GA_7_|p1-p2;2/k722,p2-p3;2/k721,p3-k722/p4,p4-p5;2/k719,p5-p6/k720,p6-p7;3/k717,p7-p8/k715,p8-p27;3/k718,p27-t1/p9,p9-l1;2/k716/p11;3,p11-p12/e1;2/e2;2,p12-k713/k714/p14;3,p14-k711/k712/p16,p16-e3;2/e4;2/p17;2/p17-l2;2/k712/p28,p28-t2/p19,p19-k710/p20;2,p20-k709/k708/p22;3,p22-k707/p23;2,p23-k706/p24,p24-k705/p25,p25-k704/p26;3,p26-l3;2",
@@ -199,7 +199,7 @@ class Graph(object):
                 point1 = f"S_GA_{floor}_e_{num_el}"
                 if point1 in init_graph.keys():
                     for floor_2 in range(2, 3 + 1):
-                        if floor_2 != floor:
+                        if floor_2 != floor and floor_2 != 3 and floor != 3:
                             point2 = f"S_GA_{floor_2}_e_{num_el}"
                             if point2 in init_graph.keys():
                                 init_graph[point1][point2] = 1
@@ -209,9 +209,10 @@ class Graph(object):
             for floor in range(2, 2 + 1):
                 point_1 = f"S_GA_{floor}_l_{num_l}U"
                 point_2 = f"S_GA_{floor + 1}_l_{num_l}D"
-                if (point_1 in init_graph.keys()) and (point_2 in init_graph.keys()) and (point_2 in init_graph[point1].keys()) and (point_1 in init_graph[point2].keys()):
-                    init_graph[point_1][point_2] = 2
-                    init_graph[point_2][point_1] = 2
+                print("!!", point_1, point_2)
+                if (point_1 in init_graph.keys()) and (point_2 in init_graph.keys()):
+                    init_graph[point_1][point_2] = 1
+                    init_graph[point_2][point_1] = 1
 
         for init_elem in self.init_graph_connections:
             if "|" in init_elem:
@@ -321,6 +322,4 @@ class Graph(object):
         return all_points
 
 
-graph = Graph()
-print(graph.return_shortest_path("S_GV_3_p_1", "S_GA_4_p_1"))
-    #"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]
+#"S_GV_7_|p1-p2/k701/p12,p2-k702/p3,p3-k702/p4,p4-p5/k703,p5-p6/k703,p6-k704/p7,p7-p18/k704,p18-h1/p8,p8-p9/k705,p9-k705/p10,p10-k706/p11,p11-p12/k701,p12-p13,p13-e1/p16,p16-e2/p14,p14-p15/p17,p17-e3,p15-l1D"]
