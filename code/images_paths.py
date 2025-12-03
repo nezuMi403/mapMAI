@@ -10,41 +10,25 @@ class ImagesPaths:
         'search': 'assets/sprites/buttons/square_buttons_blue/Question-Idle.png',
         'point': 'assets/sprites/buttons/square_buttons_blue/Star-Idle.png',
     }
-    """GUKA = {
-        1: 'assets/sprites/GUK/A/GUKA1_res.png',
-        2: 'assets/sprites/GUK/A/GUKA2_res.png',
-        3: 'assets/sprites/GUK/A/GUKA3_res.png',
-        4: 'assets/sprites/GUK/A/GUKA4_res.png',
-        5: 'assets/sprites/GUK/A/GUKA5_res.png',
-        6: 'assets/sprites/GUK/A/GUKA6_res.png',
-        7: 'assets/sprites/GUK/A/GUKA7_res.png',
-    }
-    GUKB = {
-        2: 'assets/sprites/GUK/B/GUKB2.png',
-        3: 'assets/sprites/GUK/B/GUKB3.png',
-        5: 'assets/sprites/GUK/B/GUKB5.png',
-        6: 'assets/sprites/GUK/B/GUKB6.png',
-        7: 'assets/sprites/GUK/B/GUKB7.png',
-    }
-    GUKV = {
-        2: 'assets/sprites/GUK/V/GUKV2.png',
-        3: 'assets/sprites/GUK/V/GUKV3.png',
-        5: 'assets/sprites/GUK/V/GUKV5.png',
-        6: 'assets/sprites/GUK/V/GUKV6.png',
-        7: 'assets/sprites/GUK/V/GUKV7.png',
-    }"""
 
     GUKA = {
         2: "assets/sprites/GUK/A/gukA2.jpg",
         3: "assets/sprites/GUK/A/gukA3.jpg",
+        4: "assets/sprites/GUK/A/gukA4.jpg",
+        6: "assets/sprites/GUK/A/gukA6.jpg",
+        # 7 не открывается
     }
 
     GUKB = {
-        # 2: "assets/sprites/GUK/B/gukB2.jpg",
-        # 3: "assets/sprites/GUK/B/gukB3.jpg",
+        2: "assets/sprites/GUK/B/gukB2.jpg",
+        3: "assets/sprites/GUK/B/gukB3.jpg",
+        6: "assets/sprites/GUK/B/gukB6.jpg",
+        7: "assets/sprites/GUK/B/gukB7.jpg",
     }
 
     GUKV = {
-        # 2: "assets/sprites/GUK/V/gukV2.jpg",
+        2: "assets/sprites/GUK/V/gukV2.jpg",
         3: "assets/sprites/GUK/V/gukV3.jpg",
+        6: "assets/sprites/GUK/V/gukV6.jpg",  # без надписей
+        7: "assets/sprites/GUK/V/gukV7.jpg",
     }

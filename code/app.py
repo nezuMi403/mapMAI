@@ -106,7 +106,6 @@ class MenuScreen(Screen):
         self._switch_screen('guka')
 
     def set_gukb(self, instance):
-        return  # Раскомментируйте когда добавите экран ГУК Б
         self._switch_screen('gukb')
 
     def set_gukv(self, instance):
@@ -122,7 +121,7 @@ class MainApp(App):
         screens = [
             MenuScreen(name='menu'),
             MapScreen(graph=graph, cur_build=ImagesPaths.GUKA, name='guka'),
-            # MapScreen(cur_build=ImagesPaths.GUKB, name='gukb'),
+            MapScreen(graph=graph, cur_build=ImagesPaths.GUKB, name='gukb'),
             MapScreen(graph=graph, cur_build=ImagesPaths.GUKV, name='gukv'),
             MapScreen(graph=graph, cur_build=ImagesPaths.OUTSIDE, name='outside'),
 
