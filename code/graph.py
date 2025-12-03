@@ -33,11 +33,9 @@ class Graph(object):
         self.init_params()
         self.add_to_nodes()
         self.init_graph = self.initialization_graph()
-        # pprint(self.init_graph, width=1000, depth=3)
         self.graph = self.construct_graph(self.nodes, self.init_graph)
 
         self.dict_of_points_coordinates = self.make_dictionar_of_points()
-        # pprint(dict_of_points_coordinates)
 
     def init_params(self):
         '''inicializating all constants for graph'''
@@ -298,7 +296,7 @@ h_1r: (4187, 5864)"""
         #print(" -> ".join(reversed(path)))
         #print(type(shortest_path[target_node]))
         #print(type(reversed(path)))
-        print([shortest_path[target_node]] + list(reversed(path)))
+        #print([shortest_path[target_node]] + list(reversed(path)))
         return [shortest_path[target_node]] + list(reversed(path))
 
 

@@ -12,16 +12,16 @@ class ImagesPaths:
     }
 
     GUKA = {
-        2: "assets/sprites/GUK/A/gukA2.jpg",
-        3: "assets/sprites/GUK/A/gukA3.jpg",
+        2: "assets/sprites/GUK/A/gukA2.jpg",  # граф готов
+        3: "assets/sprites/GUK/A/gukA3.jpg",  # граф готов
         4: "assets/sprites/GUK/A/gukA4.jpg",
-        6: "assets/sprites/GUK/A/gukA6.jpg",
-        # 7 не открывается
+        6: "assets/sprites/GUK/A/gukA6.jpg",  # граф готов
+        # 7 не открывается, граф готов
     }
 
     GUKB = {
         2: "assets/sprites/GUK/B/gukB2.jpg",
-        3: "assets/sprites/GUK/B/gukB3.jpg",
+        3: "assets/sprites/GUK/B/gukB3.jpg",  # граф готов
         6: "assets/sprites/GUK/B/gukB6.jpg",
         7: "assets/sprites/GUK/B/gukB7.jpg",
     }
