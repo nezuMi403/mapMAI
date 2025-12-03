@@ -16,7 +16,7 @@ class ImagesPaths:
         3: "assets/sprites/GUK/A/gukA3.jpg",  # граф готов
         4: "assets/sprites/GUK/A/gukA4.jpg",
         6: "assets/sprites/GUK/A/gukA6.jpg",  # граф готов
-        # 7 не открывается, граф готов
+        7: "assets/sprites/GUK/A/gukA7.jpg",  # граф готов
     }
 
     GUKB = {
