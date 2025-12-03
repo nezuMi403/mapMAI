@@ -22,23 +22,28 @@ class RouteRenderer(Widget):
         """Установить текущее здание и этаж"""
         self.current_building = building
         self.current_level = level
-        self.draw_route()
+        print('CV', building, level)
+        if self.current_route:
+            self.draw_route()
+        if self.current_point:
+            self.draw_point()
 
     def set_route(self, route_nodes):
         """Установить текущий маршрут для отображения"""
-        # print('Отрисовывается маршрут:', route_nodes)
         self.current_route = route_nodes
         self.current_point = None
         self.draw_route()
 
     def set_point(self, point):
         """Установить текущую точку для отображения"""
-        #print('Отрисовывается точка:', point)
         self.current_point = point
         self.current_route = []
         self.draw_point()
 
     def draw_route(self):
+        print('Отрисовывается маршрут:', self.current_route)
+        #print(self.current_building)
+        #print(self.current_level)
         """Отрисовать маршрут на canvas"""
         self.canvas.clear()
 
@@ -80,13 +85,13 @@ class RouteRenderer(Widget):
                     #points2.extend([x1+0.3, y1, x2+0.2, y2])
                 else:
                     pass
-                    #print(coordinates)
+                    """#print(coordinates)
                     if node1 not in coordinates:
                         print(f"ОШИБКА: точка {node1} не найдена для здания {self.current_building}, этажа {self.current_level}")
                     if node2 not in coordinates:
                         print(f"ОШИБКА: точка {node2} не найдена для здания {self.current_building}, этажа {self.current_level}")
                     #print("navigation_data:")
-                    #pprint(self.navigation_data)
+                    #pprint(self.navigation_data)"""
 
 
             if points:
@@ -114,6 +119,9 @@ class RouteRenderer(Widget):
                     r = 2
                     Ellipse(pos=(x - r//2, y - r//2), size=(r, r))
     def draw_point(self):
+        print('Отрисовывается точка:', self.current_point)
+        #print(self.current_building)
+        #print(self.current_level)
         """Отрисовать точку на canvas"""
         self.canvas.clear()
 

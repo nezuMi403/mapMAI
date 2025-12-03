@@ -46,12 +46,9 @@ class MapScreen(Screen):
                 self.set_route(route_nodes)
 
             if point and point['building'] == self.name:
+                print(point, point['building'])
                 if point['level'] != self.cur_level and point['level'] in self.cur_build:
-                    self.cur_level = point['level']
-                    self.img_map.source = self.cur_build[self.cur_level]
-                    self.scatter_plane.scale = 1.5
-                    self.scatter_plane.pos = (0, 0)
-                    self.scatter_plane.rotation = 0
+                    self._set_level(point['level'])
                 point_name = point['name']
                 self.set_point(point_name)
 
