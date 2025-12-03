@@ -30,5 +30,6 @@ class ImagesPaths:
         2: "assets/sprites/GUK/V/gukV2.jpg",
         3: "assets/sprites/GUK/V/gukV3.jpg",
         6: "assets/sprites/GUK/V/gukV6.jpg",  # без надписей
+        5: "assets/sprites/GUK/V/gukV5.jpg",
         7: "assets/sprites/GUK/V/gukV7.jpg",
     }
