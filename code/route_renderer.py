@@ -33,7 +33,7 @@ class RouteRenderer(Widget):
 
     def set_point(self, point):
         """Установить текущую точку для отображения"""
-        print('Отрисовывается точка:', point)
+        #print('Отрисовывается точка:', point)
         self.current_point = point
         self.current_route = []
         self.draw_point()
@@ -49,9 +49,6 @@ class RouteRenderer(Widget):
         building_data = self.navigation_data.get(self.current_building, {})
         level_data = building_data.get(self.current_level, {})
         coordinates = level_data.get('coordinates', {})
-        print(f'Рисуется маршрут для здания {self.current_building}, этажа {self.current_level}')
-        print(coordinates)
-        print(self.current_route)
 
         if not coordinates:
             return
@@ -83,13 +80,13 @@ class RouteRenderer(Widget):
                     #points2.extend([x1+0.3, y1, x2+0.2, y2])
                 else:
                     pass
-                    print(coordinates)
+                    #print(coordinates)
                     if node1 not in coordinates:
                         print(f"ОШИБКА: точка {node1} не найдена для здания {self.current_building}, этажа {self.current_level}")
                     if node2 not in coordinates:
                         print(f"ОШИБКА: точка {node2} не найдена для здания {self.current_building}, этажа {self.current_level}")
-                    print("navigation_data:")
-                    pprint(self.navigation_data)
+                    #print("navigation_data:")
+                    #pprint(self.navigation_data)
 
 
             if points:
